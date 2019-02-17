@@ -1,0 +1,42 @@
+import React from "react";
+import AnimatedSprite from "react-native-animated-sprite";
+import SpriteTable from "./SpriteTable";
+import CONSTANTES from "./Constantes";
+
+export default class SpriteAnimation extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      animationType: SpriteTable.animationTypes[2]
+    };
+  }
+  render() {
+    return (
+      <>
+        <AnimatedSprite
+          ref={"Sprite"}
+          fps={2}
+          sprite={SpriteTable}
+          animationFrameIndex={SpriteTable.animationIndex(
+            this.state.animationType
+          )}
+          loopAnimation={true}
+          coordinates={{
+            top: 0,
+            left: 0
+          }}
+          size={{
+            width: CONSTANTES.sprite_width,
+            height: CONSTANTES.sprite_height
+          }}
+          draggable={true}
+          tweenOptions={this.state.tweenOptions}
+          tweenStart={"fromMethod"}
+          onPress={() => {
+            this.onPress();
+          }}
+        />
+      </>
+    );
+  }
+}
