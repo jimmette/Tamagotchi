@@ -3,7 +3,7 @@ import AnimatedSprite from "react-native-animated-sprite";
 import SpriteTable from "./SpriteTable";
 import CONSTANTES from "./Constantes";
 
-export default class SpriteAnimation extends React.Component {
+class SpriteAnimation extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -32,11 +32,11 @@ export default class SpriteAnimation extends React.Component {
           draggable={true}
           tweenOptions={this.state.tweenOptions}
           tweenStart={"fromMethod"}
-          onPress={() => {
-            this.onPress();
-          }}
+          onPress={() => {}}
         />
       </>
     );
   }
 }
+
+export default SpriteAnimation;

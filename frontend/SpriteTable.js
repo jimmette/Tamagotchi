@@ -2,14 +2,15 @@ const SpriteTable = {
   name: "monster",
   size: { width: 750, height: 750 },
   animationTypes: [
-    "IDLE",
-    "WALK_FROM_FRONT",
-    "DANCE",
-    "LAUGH",
-    "RUN_TO_RIGHT",
-    "WALK_FROM_BACK",
-    "YAWN",
-    "HAPPY_JUMP"
+    "IDLE", //00
+    "WALK_FROM_FRONT", //01
+    "DANCE", //02
+    "LAUGH", //03  bof à changer
+    "RUN_TO_RIGHT", //04
+    "WALK_FROM_BACK", //05
+    "YAWN", //06
+    "HAPPY_JUMP", //07
+    "SLEEP" //08
   ],
   frames: [
     require("./assets/images/sprites/sprite000.png"),
@@ -40,7 +41,11 @@ const SpriteTable = {
     require("./assets/images/sprites/sprite025.png"),
     require("./assets/images/sprites/sprite026.png"),
     require("./assets/images/sprites/sprite027.png"),
-    require("./assets/images/sprites/sprite028.png")
+    require("./assets/images/sprites/sprite028.png"),
+    require("./assets/images/sprites/sprite029.png"),
+    require("./assets/images/sprites/sprite030.png"),
+    require("./assets/images/sprites/sprite031.png"),
+    require("./assets/images/sprites/sprite032.png")
   ],
   animationIndex: function getAnimationIndex(animationType) {
     switch (animationType) {
@@ -60,6 +65,8 @@ const SpriteTable = {
         return [20, 21, 22, 23, 24];
       case "HAPPY_JUMP":
         return [25, 26, 27, 28];
+      case "SLEEP":
+        return [29, 30, 31, 32];
       default:
         return [];
     }

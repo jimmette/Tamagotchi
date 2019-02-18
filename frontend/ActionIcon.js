@@ -2,13 +2,14 @@ import React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import CONSTANTES from "./Constantes";
 
-export default class ActionIcon extends React.Component {
+class ActionIcon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   onPress = () => {
     console.log("pressed", this.props.title);
+    this.props.onClickAction();
   };
   render() {
     return (
@@ -18,3 +19,5 @@ export default class ActionIcon extends React.Component {
     );
   }
 }
+
+export default ActionIcon;

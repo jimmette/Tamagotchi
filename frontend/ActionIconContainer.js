@@ -1,6 +1,7 @@
 import React from "react";
 import ActionIcon from "./ActionIcon";
 import { View, StyleSheet } from "react-native";
+import { connect } from "react-redux";
 import CONSTANTES from "./Constantes";
 
 const styles = StyleSheet.create({
@@ -12,12 +13,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class ActionIconContainer extends React.Component {
+class ActionIconContainer extends React.Component {
+  handleOnClickEat = () => {
+    this.props.dispatch({ type: "MAKE_TAMMY_EAT" });
+  };
   render() {
     return (
       <>
         <View style={styles.actionIcon}>
-          <ActionIcon title="Eat" />
+          <ActionIcon title="Eat" onClickAction={this.handleOnClickEat} />
         </View>
         <View style={styles.actionIcon}>
           <ActionIcon title="Sleep" />
@@ -29,3 +33,13 @@ export default class ActionIconContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    skillPointsEat: state.skillPointsEat,
+    skillPointsSleep: state.skillPointsSleep,
+    skillPointsPlay: state.skillPointsPlay
+  };
+};
+
+export default connect(mapStateToProps)(ActionIconContainer);
