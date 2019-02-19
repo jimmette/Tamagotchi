@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
-import CONSTANTES from "./Constantes";
+import CONSTANTS from "./Constants";
 import { Container, View } from "native-base";
 
 class StatusBar extends React.Component {
@@ -13,11 +13,10 @@ class StatusBar extends React.Component {
     return {
       view: {
         backgroundColor: this.props.color,
-        borderRadius: CONSTANTES.statusbar_border_radius,
+        borderRadius: CONSTANTS.statusbar_border_radius,
         width:
-          ((CONSTANTES.statusbar_width -
-            2 * CONSTANTES.statusbar_border_width) /
-            CONSTANTES.eat_max_point) *
+          ((CONSTANTS.statusbar_width - 2 * CONSTANTS.statusbar_border_width) /
+            CONSTANTS.eat_max_point) *
           this.props.points
       },
       text: { marginLeft: 10 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import CONSTANTES from "./Constantes";
+import CONSTANTS from "./Constants";
 import {
   Container,
   Header,
@@ -13,7 +13,7 @@ import {
 class OptionsFooter extends React.Component {
   render() {
     return (
-      <View style={{ width: CONSTANTES.app_width }}>
+      <View style={{ width: CONSTANTS.app_width }}>
         <Footer>
           <FooterTab>
             <Button>

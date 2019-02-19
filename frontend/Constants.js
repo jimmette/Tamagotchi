@@ -1,6 +1,6 @@
 import { Dimensions } from "react-native";
 
-const CONSTANTES = {
+const CONSTANTS = {
   app_width: Dimensions.get("window").width,
   app_height: Dimensions.get("window").height,
   statusbar_width: Dimensions.get("window").width - 50,
@@ -12,7 +12,11 @@ const CONSTANTES = {
 
   eat_max_point: 100,
   sleep_max_point: 100,
-  happiness_max_point: 100
+  happiness_max_point: 100,
+
+  eat_timer: 4000,
+  sleep_timer: 10000,
+  yawn_timer: 2000
 };
 
-export default CONSTANTES;
+export default CONSTANTS;

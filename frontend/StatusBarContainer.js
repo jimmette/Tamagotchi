@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import CONSTANTES from "./Constantes";
+import CONSTANTS from "./Constants";
 import StatusBar from "./StatusBar";
 import { connect } from "react-redux";
 import { Container } from "native-base";
@@ -8,9 +8,9 @@ import { Container } from "native-base";
 const styles = StyleSheet.create({
   statusbars: {
     marginBottom: 10,
-    width: CONSTANTES.statusbar_width,
-    borderWidth: CONSTANTES.statusbar_border_width,
-    borderRadius: CONSTANTES.statusbar_border_radius
+    width: CONSTANTS.statusbar_width,
+    borderWidth: CONSTANTS.statusbar_border_width,
+    borderRadius: CONSTANTS.statusbar_border_radius
   }
 });
 

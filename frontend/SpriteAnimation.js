@@ -1,6 +1,6 @@
 import React from "react";
 import AnimatedSprite from "react-native-animated-sprite";
-import CONSTANTES from "./Constantes";
+import CONSTANTS from "./Constants";
 import { connect } from "react-redux";
 import SpriteTable from "./SpriteTable";
 
@@ -22,11 +22,11 @@ class SpriteAnimation extends React.Component {
           loopAnimation={true}
           coordinates={{
             top: 0,
-            left: -CONSTANTES.sprite_width / 2
+            left: -CONSTANTS.sprite_width / 2
           }}
           size={{
-            width: CONSTANTES.sprite_width,
-            height: CONSTANTES.sprite_height
+            width: CONSTANTS.sprite_width,
+            height: CONSTANTS.sprite_height
           }}
           draggable={true}
           tweenOptions={this.state.tweenOptions}

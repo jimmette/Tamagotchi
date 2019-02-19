@@ -1,4 +1,4 @@
-import CONSTANTES from "./Constantes";
+import CONSTANTES from "./Constants";
 import SpriteTable from "./SpriteTable";
 
 const initState = {
@@ -9,28 +9,60 @@ const initState = {
   doesTammySleep: false,
   doesTammyPlay: false,
   spriteAnimation: SpriteTable.animationTypes[0],
-  isTammyMad: false
+  isTammyMad: false,
+  isTammyWeak: false
 };
 
 function reducer(state = initState, action) {
+  whatIsTammyMoodAnimation = () => {
+    if (state.isTammyMad === true) return SpriteTable.animationTypes[9];
+    if (state.isTammyWeak === true) return SpriteTable.animationTypes[11];
+
+    return SpriteTable.animationTypes[0];
+  };
+
   let newState = 0;
   switch (action.type) {
+    case "MAKE_TAMMY_MAD":
+      return {
+        ...state,
+        spriteAnimation: SpriteTable.animationTypes[9],
+        isTammyMad: true
+      };
+    case "MAKE_TAMMY_WEAK":
+      return {
+        ...state,
+        spriteAnimation: SpriteTable.animationTypes[11],
+        isTammyWeak: true
+      };
     case "MAKE_TAMMY_EAT":
       console.log(" in MAKE_TAMMY_EAT");
-      newState = state.statusPointsEat + 10;
-      newState =
-        newState > CONSTANTES.eat_max_point
-          ? CONSTANTES.eat_max_point
-          : newState;
-      return { ...state, statusPointsEat: newState };
+      return {
+        ...state,
+        doesTammyEat: true,
+        spriteAnimation: SpriteTable.animationTypes[3]
+      };
+    case "MAKE_TAMMY_STOP_EAT":
+      console.log(" in MAKE_TAMMY_STOP_EAT");
+      return {
+        ...state,
+        doesTammyEat: false,
+        spriteAnimation: whatIsTammyMoodAnimation()
+      };
     case "MAKE_TAMMY_SLEEP":
       console.log(" in MAKE_TAMMY_SLEEP");
-      newState = state.statusPointsSleep + 10;
-      newState =
-        newState > CONSTANTES.sleep_max_point
-          ? CONSTANTES.sleep_max_point
-          : newState;
-      return { ...state, statusPointsSleep: newState };
+      return {
+        ...state,
+        doesTammySleep: true,
+        spriteAnimation: SpriteTable.animationTypes[8]
+      };
+    case "MAKE_TAMMY_STOP_SLEEP":
+      console.log(" in MAKE_TAMMY_STOP_SLEEP");
+      return {
+        ...state,
+        doesTammySleep: false,
+        spriteAnimation: whatIsTammyMoodAnimation()
+      };
     case "MAKE_TAMMY_PLAY":
       console.log(" in MAKE_TAMMY_PLAY");
       newState = state.statusPointsHappiness + 10;
@@ -39,18 +71,24 @@ function reducer(state = initState, action) {
           ? CONSTANTES.happiness_max_point
           : newState;
       return { ...state, statusPointsHappiness: newState };
-    case "STATUS_UPDATE":
-      let newEat = state.statusPointsEat - action.eatRate;
+    case "MAKE_TAMMY_YAWN":
+      return {
+        ...state,
+        doesTammySleep: true,
+        spriteAnimation: SpriteTable.animationTypes[6]
+      };
+    case "ALL_STATUS_UPDATE":
+      let newEat = state.statusPointsEat + action.eatRate;
       newEat = newEat < 0 ? 0 : newEat;
       newEat =
         newEat > CONSTANTES.eat_max_point ? CONSTANTES.eat_max_point : newEat;
-      let newSleep = state.statusPointsSleep - action.sleepRate;
+      let newSleep = state.statusPointsSleep + action.sleepRate;
       newSleep = newSleep < 0 ? 0 : newSleep;
       newSleep =
         newSleep > CONSTANTES.sleep_max_point
           ? CONSTANTES.sleep_max_point
           : newSleep;
-      let newHappiness = state.statusPointsHappiness - action.happinessRate;
+      let newHappiness = state.statusPointsHappiness + action.happinessRate;
       newHappiness = newHappiness < 0 ? 0 : newHappiness;
       newHappiness =
         newHappiness > CONSTANTES.happiness_max_point
@@ -62,13 +100,6 @@ function reducer(state = initState, action) {
         statusPointsSleep: newSleep,
         statusPointsHappiness: newHappiness
       };
-    case "MAKE_TAMMY_MAD":
-      return {
-        ...state,
-        spriteAnimation: SpriteTable.animationTypes[9],
-        isTammyMad: true
-      };
-
     default:
       return state;
   }

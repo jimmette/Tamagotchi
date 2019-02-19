@@ -1,7 +1,10 @@
 import React from "react";
 import { Button, View } from "react-native";
-import CONSTANTES from "./Constantes";
+import CONSTANTS from "./Constants";
 import { Container } from "native-base";
+
+// styleDisabled={styles.disabled}
+//       disabled={this.props.disabled}
 
 class ActionIcon extends React.Component {
   constructor(props) {
@@ -15,7 +18,12 @@ class ActionIcon extends React.Component {
   render() {
     return (
       <View>
-        <Button title={this.props.title} onPress={this.onPress} />
+        <Button
+          title={this.props.title}
+          onPress={this.onPress}
+          styleDisabled={{ backgroundColor: "gray" }}
+          disabled={this.props.disabled}
+        />
       </View>
     );
   }
