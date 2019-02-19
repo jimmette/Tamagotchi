@@ -3,6 +3,7 @@ import ActionIcon from "./ActionIcon";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import CONSTANTES from "./Constantes";
+import { Container } from "native-base";
 
 const styles = StyleSheet.create({
   actionIcon: {
@@ -17,6 +18,12 @@ class ActionIconContainer extends React.Component {
   handleOnClickEat = () => {
     this.props.dispatch({ type: "MAKE_TAMMY_EAT" });
   };
+  handleOnClickSleep = () => {
+    this.props.dispatch({ type: "MAKE_TAMMY_SLEEP" });
+  };
+  handleOnClickPlay = () => {
+    this.props.dispatch({ type: "MAKE_TAMMY_PLAY" });
+  };
   render() {
     return (
       <>
@@ -24,10 +31,13 @@ class ActionIconContainer extends React.Component {
           <ActionIcon title="Eat" onClickAction={this.handleOnClickEat} />
         </View>
         <View style={styles.actionIcon}>
-          <ActionIcon title="Sleep" />
+          <ActionIcon title="Sleep" onClickAction={this.handleOnClickSleep} />
         </View>
         <View style={styles.actionIcon}>
-          <ActionIcon title="Play" />
+          <ActionIcon
+            title="Happiness"
+            onClickAction={this.handleOnClickPlay}
+          />
         </View>
       </>
     );
@@ -36,9 +46,9 @@ class ActionIconContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    skillPointsEat: state.skillPointsEat,
-    skillPointsSleep: state.skillPointsSleep,
-    skillPointsPlay: state.skillPointsPlay
+    statusPointsEat: state.statusPointsEat,
+    statusPointsSleep: state.statusPointsSleep,
+    statusPointsHappiness: state.statusPointsHappiness
   };
 };
 

@@ -45,12 +45,15 @@ const SpriteTable = {
     require("./assets/images/sprites/sprite029.png"),
     require("./assets/images/sprites/sprite030.png"),
     require("./assets/images/sprites/sprite031.png"),
-    require("./assets/images/sprites/sprite032.png")
+    require("./assets/images/sprites/sprite032.png"),
+    require("./assets/images/sprites/sprite033.png"),
+    require("./assets/images/sprites/sprite034.png"),
+    require("./assets/images/sprites/sprite035.png")
   ],
   animationIndex: function getAnimationIndex(animationType) {
     switch (animationType) {
       case "IDLE":
-        return [0];
+        return [33, 34, 35];
       case "WALK_FROM_FRONT":
         return [0, 1, 2, 3];
       case "DANCE":

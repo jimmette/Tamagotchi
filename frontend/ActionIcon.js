@@ -1,6 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { Button, View } from "react-native";
 import CONSTANTES from "./Constantes";
+import { Container } from "native-base";
 
 class ActionIcon extends React.Component {
   constructor(props) {

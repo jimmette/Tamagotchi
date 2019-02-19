@@ -1,12 +1,14 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import SpriteAnimation from "./SpriteAnimation";
 import CONSTANTES from "./Constantes";
-import SkillBarContainer from "./SkillBarContainer";
+import StatusBarContainer from "./StatusBarContainer";
 import ActionIconContainer from "./ActionIconContainer";
 import { Provider } from "react-redux";
 import myStore from "./Store";
-import { Container } from "native-base";
+import { Container, View } from "native-base";
+import gameEngine from "./GameEngine";
+import OptionsFooter from "./OptionsFooter";
 
 const styles = StyleSheet.create({
   container: {
@@ -31,13 +33,14 @@ const styles = StyleSheet.create({
 class App extends React.Component {
   constructor(props) {
     super(props);
+    setInterval(gameEngine, 1000);
   }
   render() {
     return (
       <Provider store={myStore}>
         <View style={styles.container}>
           <View>
-            <SkillBarContainer />
+            <StatusBarContainer />
           </View>
           <View>
             <SpriteAnimation />

@@ -7,7 +7,7 @@ class SpriteAnimation extends React.Component {
   constructor() {
     super();
     this.state = {
-      animationType: SpriteTable.animationTypes[2]
+      animationType: SpriteTable.animationTypes[0]
     };
   }
   render() {
@@ -23,7 +23,7 @@ class SpriteAnimation extends React.Component {
           loopAnimation={true}
           coordinates={{
             top: 0,
-            left: 0
+            left: -CONSTANTES.sprite_width / 2
           }}
           size={{
             width: CONSTANTES.sprite_width,

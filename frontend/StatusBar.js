@@ -1,8 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { Text } from "react-native";
 import CONSTANTES from "./Constantes";
+import { Container, View } from "native-base";
 
-class SkillBar extends React.Component {
+class StatusBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -12,10 +13,11 @@ class SkillBar extends React.Component {
     return {
       view: {
         backgroundColor: this.props.color,
-        borderRadius: CONSTANTES.skillbar_border_radius,
+        borderRadius: CONSTANTES.statusbar_border_radius,
         width:
-          ((CONSTANTES.skillbar_width - 2 * CONSTANTES.skillbar_border_width) /
-            100) *
+          ((CONSTANTES.statusbar_width -
+            2 * CONSTANTES.statusbar_border_width) /
+            CONSTANTES.eat_max_point) *
           this.props.points
       },
       text: { marginLeft: 10 }
@@ -26,10 +28,12 @@ class SkillBar extends React.Component {
     let styles = this.createStyles();
     return (
       <View style={styles.view}>
-        <Text style={styles.text}>{this.props.title}</Text>
+        <View style={styles.text}>
+          <Text>{this.props.title}</Text>
+        </View>
       </View>
     );
   }
 }
 
-export default SkillBar;
+export default StatusBar;
