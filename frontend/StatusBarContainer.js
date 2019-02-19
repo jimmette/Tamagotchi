@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 
 class StatusBarContainer extends React.Component {
   render() {
-    console.log(this.props.statusPointsEat);
     return (
       <>
         <View style={styles.statusbars}>

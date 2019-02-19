@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 class App extends React.Component {
   constructor(props) {
     super(props);
-    setInterval(gameEngine, 1000);
+    setInterval(gameEngine, 500);
   }
   render() {
     return (

@@ -1,14 +1,13 @@
 import React from "react";
 import AnimatedSprite from "react-native-animated-sprite";
-import SpriteTable from "./SpriteTable";
 import CONSTANTES from "./Constantes";
+import { connect } from "react-redux";
+import SpriteTable from "./SpriteTable";
 
 class SpriteAnimation extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      animationType: SpriteTable.animationTypes[0]
-    };
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
   render() {
     return (
@@ -18,7 +17,7 @@ class SpriteAnimation extends React.Component {
           fps={2}
           sprite={SpriteTable}
           animationFrameIndex={SpriteTable.animationIndex(
-            this.state.animationType
+            this.props.spriteAnimation
           )}
           loopAnimation={true}
           coordinates={{
@@ -39,4 +38,10 @@ class SpriteAnimation extends React.Component {
   }
 }
 
-export default SpriteAnimation;
+const mapStateToProps = state => {
+  return {
+    spriteAnimation: state.spriteAnimation
+  };
+};
+
+export default connect(mapStateToProps)(SpriteAnimation);

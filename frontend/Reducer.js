@@ -1,4 +1,5 @@
 import CONSTANTES from "./Constantes";
+import SpriteTable from "./SpriteTable";
 
 const initState = {
   statusPointsEat: 100,
@@ -6,7 +7,9 @@ const initState = {
   statusPointsHappiness: 100,
   doesTammyEat: false,
   doesTammySleep: false,
-  doesTammyPlay: false
+  doesTammyPlay: false,
+  spriteAnimation: SpriteTable.animationTypes[0],
+  isTammyMad: false
 };
 
 function reducer(state = initState, action) {
@@ -58,6 +61,12 @@ function reducer(state = initState, action) {
         statusPointsEat: newEat,
         statusPointsSleep: newSleep,
         statusPointsHappiness: newHappiness
+      };
+    case "MAKE_TAMMY_MAD":
+      return {
+        ...state,
+        spriteAnimation: SpriteTable.animationTypes[9],
+        isTammyMad: true
       };
 
     default:

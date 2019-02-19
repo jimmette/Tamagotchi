@@ -34,10 +34,7 @@ class ActionIconContainer extends React.Component {
           <ActionIcon title="Sleep" onClickAction={this.handleOnClickSleep} />
         </View>
         <View style={styles.actionIcon}>
-          <ActionIcon
-            title="Happiness"
-            onClickAction={this.handleOnClickPlay}
-          />
+          <ActionIcon title="Play" onClickAction={this.handleOnClickPlay} />
         </View>
       </>
     );

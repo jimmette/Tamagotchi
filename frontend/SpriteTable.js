@@ -10,7 +10,10 @@ const SpriteTable = {
     "WALK_FROM_BACK", //05
     "YAWN", //06
     "HAPPY_JUMP", //07
-    "SLEEP" //08
+    "SLEEP", //08
+    "SULKING", //09
+    "CRYING", //10
+    "SAD" //11
   ],
   frames: [
     require("./assets/images/sprites/sprite000.png"),
@@ -48,7 +51,13 @@ const SpriteTable = {
     require("./assets/images/sprites/sprite032.png"),
     require("./assets/images/sprites/sprite033.png"),
     require("./assets/images/sprites/sprite034.png"),
-    require("./assets/images/sprites/sprite035.png")
+    require("./assets/images/sprites/sprite035.png"),
+    require("./assets/images/sprites/sprite036.png"),
+    require("./assets/images/sprites/sprite037.png"),
+    require("./assets/images/sprites/sprite038.png"),
+    require("./assets/images/sprites/sprite039.png"),
+    require("./assets/images/sprites/sprite040.png"),
+    require("./assets/images/sprites/sprite041.png")
   ],
   animationIndex: function getAnimationIndex(animationType) {
     switch (animationType) {
@@ -70,6 +79,12 @@ const SpriteTable = {
         return [25, 26, 27, 28];
       case "SLEEP":
         return [29, 30, 31, 32];
+      case "SULKING":
+        return [36];
+      case "CRYING":
+        return [37, 38, 39, 40];
+      case "SAD":
+        return [41];
       default:
         return [];
     }
