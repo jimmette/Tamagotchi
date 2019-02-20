@@ -21,7 +21,6 @@ function reducer(state = initState, action) {
     return SpriteTable.animationTypes[0];
   };
 
-  let newState = 0;
   switch (action.type) {
     case "MAKE_TAMMY_MAD":
       return {
@@ -34,6 +33,13 @@ function reducer(state = initState, action) {
         ...state,
         spriteAnimation: SpriteTable.animationTypes[11],
         isTammyWeak: true
+      };
+    case "MAKE_TAMMY_NOT_MAD_OR_WEAK":
+      return {
+        ...state,
+        isTammyMad: false,
+        isTammyWeak: false,
+        spriteAnimation: SpriteTable.animationTypes[0]
       };
     case "MAKE_TAMMY_EAT":
       console.log(" in MAKE_TAMMY_EAT");
@@ -48,6 +54,13 @@ function reducer(state = initState, action) {
         ...state,
         doesTammyEat: false,
         spriteAnimation: whatIsTammyMoodAnimation()
+      };
+    case "MAKE_TAMMY_YAWN":
+      console.log(" in MAKE_TAMMY_YAWN");
+      return {
+        ...state,
+        doesTammySleep: true,
+        spriteAnimation: SpriteTable.animationTypes[6]
       };
     case "MAKE_TAMMY_SLEEP":
       console.log(" in MAKE_TAMMY_SLEEP");
@@ -65,17 +78,18 @@ function reducer(state = initState, action) {
       };
     case "MAKE_TAMMY_PLAY":
       console.log(" in MAKE_TAMMY_PLAY");
-      newState = state.statusPointsHappiness + 10;
-      newState =
-        newState > CONSTANTES.happiness_max_point
-          ? CONSTANTES.happiness_max_point
-          : newState;
-      return { ...state, statusPointsHappiness: newState };
-    case "MAKE_TAMMY_YAWN":
+
       return {
         ...state,
-        doesTammySleep: true,
-        spriteAnimation: SpriteTable.animationTypes[6]
+        doesTammyPlay: true,
+        spriteAnimation: SpriteTable.animationTypes[3]
+      };
+    case "MAKE_TAMMY_STOP_PLAY":
+      console.log(" in MAKE_TAMMY_STOP_PLAY");
+      return {
+        ...state,
+        doesTammyPlay: false,
+        spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "ALL_STATUS_UPDATE":
       let newEat = state.statusPointsEat + action.eatRate;

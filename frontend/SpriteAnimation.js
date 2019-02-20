@@ -3,7 +3,7 @@ import AnimatedSprite from "react-native-animated-sprite";
 import CONSTANTS from "./Constants";
 import { connect } from "react-redux";
 import SpriteTable from "./SpriteTable";
-
+import { View } from "react-native";
 class SpriteAnimation extends React.Component {
   constructor(props) {
     super(props);
@@ -21,8 +21,8 @@ class SpriteAnimation extends React.Component {
           )}
           loopAnimation={true}
           coordinates={{
-            top: 0,
-            left: -CONSTANTS.sprite_width / 2
+            top: -50,
+            left: (CONSTANTS.app_width - CONSTANTS.sprite_width) / 2
           }}
           size={{
             width: CONSTANTS.sprite_width,
