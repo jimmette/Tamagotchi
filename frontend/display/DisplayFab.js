@@ -32,13 +32,13 @@ class DisplayFab extends React.Component {
     this.props.dispatch({ type: "MAKE_TAMMY_PLAY" });
     setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_PLAY" });
-    }, CONSTANTS.pet_timer);
+    }, CONSTANTS.play_timer);
   };
 
   isTammyEatDisabled = () => {
     if (
-      this.props.doesTammyEat === true ||
-      this.props.doesTammySleep === true
+      this.props.isTammyEating === true ||
+      this.props.isTammySleeping === true
     ) {
       return true;
     }
@@ -46,8 +46,8 @@ class DisplayFab extends React.Component {
   };
   isTammySleepDisabled = () => {
     if (
-      this.props.doesTammyEat === true ||
-      this.props.doesTammySleep === true
+      this.props.isTammyEating === true ||
+      this.props.isTammySleeping === true
     ) {
       return true;
     }
@@ -55,8 +55,8 @@ class DisplayFab extends React.Component {
   };
   isTammyPlayDisabled = () => {
     if (
-      this.props.doesTammyEat === true ||
-      this.props.doesTammySleep === true
+      this.props.isTammyEating === true ||
+      this.props.isTammySleeping === true
     ) {
       return true;
     }
@@ -117,7 +117,7 @@ class DisplayFab extends React.Component {
               disabled={this.isTammySleepDisabled()}
               onPress={this.handleOnPressSleep}
             >
-              <Icon name="logo-whatsapp" />
+              <Icon type="Entypo" name="clock" />
             </Button>
           ) : (
             undefined
@@ -151,12 +151,12 @@ class DisplayFab extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    statusPointsEat: state.statusPointsEat,
-    statusPointsSleep: state.statusPointsSleep,
-    statusPointsHappiness: state.statusPointsHappiness,
-    doesTammyEat: state.doesTammyEat,
-    doesTammySleep: state.doesTammySleep,
-    doesTammyPlay: state.doesTammyPlay
+    satietyLevel: state.satietyLevel,
+    energyLevel: state.energyLevel,
+    joyLevel: state.joyLevel,
+    isTammyEating: state.isTammyEating,
+    isTammySleeping: state.isTammySleeping,
+    isTammyPlaying: state.isTammyPlaying
   };
 };
 

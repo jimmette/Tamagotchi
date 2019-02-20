@@ -3,7 +3,18 @@ import AnimatedSprite from "react-native-animated-sprite";
 import CONSTANTS from "./Constants";
 import { connect } from "react-redux";
 import SpriteTable from "./SpriteTable";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    // width: CONSTANTS.app_width,
+    // height: CONSTANTS.app_height,
+    // flex: 1,
+    // flexDirection: "column",
+    // justifyContent: "center",
+    // alignItems: "center"
+  }
+});
 class SpriteAnimation extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +22,7 @@ class SpriteAnimation extends React.Component {
   }
   render() {
     return (
-      <>
+      <View style={styles.container}>
         <AnimatedSprite
           ref={"Sprite"}
           fps={2}
@@ -21,7 +32,7 @@ class SpriteAnimation extends React.Component {
           )}
           loopAnimation={true}
           coordinates={{
-            top: -50,
+            top: -150,
             left: (CONSTANTS.app_width - CONSTANTS.sprite_width) / 2
           }}
           size={{
@@ -33,7 +44,7 @@ class SpriteAnimation extends React.Component {
           tweenStart={"fromMethod"}
           onPress={() => {}}
         />
-      </>
+      </View>
     );
   }
 }

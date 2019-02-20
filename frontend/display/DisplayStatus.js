@@ -112,9 +112,9 @@ class DisplayStatus extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    satietyLevel: state.statusPointsEat,
-    energyLevel: state.statusPointsSleep,
-    joyLevel: state.statusPointsHappiness
+    satietyLevel: state.satietyLevel,
+    energyLevel: state.energyLevel,
+    joyLevel: state.joyLevel
   };
 };
 
