@@ -1,21 +1,22 @@
 import myStore from "./Store";
 import CONSTANTS from "./Constants";
 
-let satietyLossRate = -CONSTANTS.satiety_level_max_points / (5 * 60);
+let satietyLossRate = -CONSTANTS.satiety_level_max_points / (100 * 60);
 let satietyGainRate = (15 / CONSTANTS.eat_timer) * 1000;
-let energyLossRate = -CONSTANTS.energy_level_max_points / (5 * 60);
+let energyLossRate = -CONSTANTS.energy_level_max_points / (100 * 60);
 let energyGainRate = (20 / CONSTANTS.sleep_timer) * 1000;
-let joyLossRate = -CONSTANTS.joy_level_max_points / (5 * 60);
+let joyLossRate = -CONSTANTS.joy_level_max_points / (100 * 60);
 let joyGainRate = (15 / CONSTANTS.play_timer) * 1000;
 
-isTammyDoingSomething = () => {
+let isTammyDoingSomething = () => {
+  if (myStore.getState().isTammyInUselessAnimation === true) return true;
   if (myStore.getState().isTammyEating === true) return true;
   if (myStore.getState().isTammySleeping === true) return true;
   if (myStore.getState().isTammyPlaying === true) return true;
   return false;
 };
 
-doesTammyNeedsToBeMad = () => {
+let doesTammyNeedsToBeMad = () => {
   if (
     myStore.getState().isTammyMad === false &&
     isTammyDoingSomething() === false &&
@@ -29,7 +30,7 @@ doesTammyNeedsToBeMad = () => {
   return false;
 };
 
-doesTammyNeedsToBeWeak = () => {
+let doesTammyNeedsToBeWeak = () => {
   if (
     myStore.getState().isTammyWeak === false &&
     isTammyDoingSomething() === false &&
@@ -43,7 +44,7 @@ doesTammyNeedsToBeWeak = () => {
   return false;
 };
 
-doesTammyNeedsToStopBeingMadOrWeak = () => {
+let doesTammyNeedsToStopBeingMadOrWeak = () => {
   if (
     (myStore.getState().isTammyMad === true ||
       myStore.getState().isTammyWeak === true) &&
@@ -56,6 +57,42 @@ doesTammyNeedsToStopBeingMadOrWeak = () => {
   }
   // console.log("Tammy does not need to stop being mad or weak");
   return false;
+};
+
+doesTammyNeedsToStopEating = () => {
+  if (
+    myStore.getState().isTammyEating === true &&
+    myStore.getState().isTammyInUselessAnimation === false &&
+    myStore.getState().satietyLevel === CONSTANTS.satiety_level_max_points
+  ) {
+    myStore.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
+    //Display I'm full. Thank you!
+    myStore.dispatch({
+      type: "DISPLAY_MESSAGE",
+      payload: "I'm full. Thank you!"
+    });
+    setTimeout(() => {
+      myStore.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
+    }, CONSTANTS.animation_interruption_messages);
+  }
+};
+
+doesTammyNeedsToStopSleeping = () => {
+  if (
+    myStore.getState().isTammySleeping === true &&
+    myStore.getState().isTammyInUselessAnimation === false &&
+    myStore.getState().energyLevel === CONSTANTS.energy_level_max_points
+  ) {
+    myStore.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
+    //Display I'm well rested. Thank you!
+    myStore.dispatch({
+      type: "DISPLAY_MESSAGE",
+      payload: "I'm well rested. Thank you!"
+    });
+    setTimeout(() => {
+      myStore.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
+    }, CONSTANTS.animation_interruption_messages);
+  }
 };
 
 let gameEngine = () => {
@@ -71,6 +108,9 @@ let gameEngine = () => {
     // console.log("Tammy better");
     myStore.dispatch({ type: "MAKE_TAMMY_NOT_MAD_OR_WEAK" });
   }
+
+  doesTammyNeedsToStopEating();
+  doesTammyNeedsToStopSleeping();
 
   let satietyRate =
     myStore.getState().isTammyEating === true
@@ -101,3 +141,4 @@ let gameEngine = () => {
 };
 
 export default gameEngine;
+export { isTammyDoingSomething };

@@ -13,7 +13,9 @@ const CONSTANTS = {
   eat_timer: 4000,
   sleep_timer: 10000,
   yawn_timer: 2000,
-  play_timer: 4000
+  play_timer: 4000,
+  jump_timer: 4000,
+  animation_interruption_messages: 4000
 };
 
 export default CONSTANTS;

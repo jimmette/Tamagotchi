@@ -30,7 +30,8 @@ class DisplayStatus extends React.Component {
         marginTop: 25,
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 0
+        marginBottom: 0,
+        maxHeight: 50
         // margin: "24 10 0"
       },
       statusBar: {
@@ -88,7 +89,7 @@ class DisplayStatus extends React.Component {
     return (
       <View style={styles.status}>
         <View style={styles.statusBar}>
-          <Text style={styles.statusBarText}>Hunger</Text>
+          <Text style={styles.statusBarText}>Satiety</Text>
           <View style={styles.statusBarIndicator}>
             <View style={styles.hungerFill} />
           </View>

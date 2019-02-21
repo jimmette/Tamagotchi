@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Header, Left, Body, Right, Title, Subtitle } from "native-base";
 
 class DisplayHeader extends React.Component {
@@ -7,7 +8,7 @@ class DisplayHeader extends React.Component {
       <Header>
         <Left />
         <Body>
-          <Title>Tammy</Title>
+          <Title>{this.props.name}</Title>
           <Subtitle>your Tamagotchi</Subtitle>
         </Body>
         <Right />
@@ -16,4 +17,8 @@ class DisplayHeader extends React.Component {
   }
 }
 
-export default DisplayHeader;
+const mapStateToProps = state => {
+  return { name: state.tammyName };
+};
+
+export default connect(mapStateToProps)(DisplayHeader);

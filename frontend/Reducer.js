@@ -2,15 +2,24 @@ import CONSTANTES from "./Constants";
 import SpriteTable from "./SpriteTable";
 
 const initState = {
+  tammyName: "Tammy",
   satietyLevel: 100,
   energyLevel: 100,
   joyLevel: 100,
+  isTammyInUselessAnimation: false,
   isTammyEating: false,
   isTammySleeping: false,
   isTammyPlaying: false,
-  spriteAnimation: SpriteTable.animationTypes[0],
   isTammyMad: false,
-  isTammyWeak: false
+  isTammyWeak: false,
+  spriteAnimation: SpriteTable.animationTypes[0],
+  currentPage: "Home",
+  howMuchHasTammyWalked: 0,
+  howLongHasTammyWalked: 0,
+  displayMessage: "",
+  sleepInterval: undefined,
+  walkInterval: undefined,
+  eatTimeout: undefined
 };
 
 function reducer(state = initState, action) {
@@ -20,6 +29,13 @@ function reducer(state = initState, action) {
 
     return SpriteTable.animationTypes[0];
   };
+
+  // console.log(
+  //   state.isTammyInUselessAnimation,
+  //   state.isTammyEating,
+  //   state.isTammySleeping,
+  //   state.isTammyPlaying
+  // );
 
   switch (action.type) {
     case "MAKE_TAMMY_MAD":
@@ -45,39 +61,54 @@ function reducer(state = initState, action) {
         spriteAnimation: SpriteTable.animationTypes[0]
       };
     case "MAKE_TAMMY_EAT":
-      // console.log(" in MAKE_TAMMY_EAT");
+      console.log(" in MAKE_TAMMY_EAT");
       return {
         ...state,
         isTammyEating: true,
-        spriteAnimation: SpriteTable.animationTypes[3]
+        spriteAnimation: SpriteTable.animationTypes[3],
+        eatTimeout: action.payload
       };
     case "MAKE_TAMMY_STOP_EAT":
-      // console.log(" in MAKE_TAMMY_STOP_EAT");
+      console.log(" in MAKE_TAMMY_STOP_EAT");
+      clearTimeout(state.eatTimeout);
       return {
         ...state,
         isTammyEating: false,
-        spriteAnimation: whatIsTammyMoodAnimation()
+        spriteAnimation: whatIsTammyMoodAnimation(),
+        eatTimeout: undefined
       };
     case "MAKE_TAMMY_YAWN":
       // console.log(" in MAKE_TAMMY_YAWN");
       return {
         ...state,
-        isTammySleeping: true,
+        isTammyInUselessAnimation: true,
         spriteAnimation: SpriteTable.animationTypes[6]
+      };
+    case "MAKE_TAMMY_STOP_YAWN":
+      // console.log(" in MAKE_TAMMY_STOP_YAWN");
+      return {
+        ...state,
+        isTammyInUselessAnimation: false,
+        spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "MAKE_TAMMY_SLEEP":
       // console.log(" in MAKE_TAMMY_SLEEP");
       return {
         ...state,
         isTammySleeping: true,
-        spriteAnimation: SpriteTable.animationTypes[8]
+        spriteAnimation: SpriteTable.animationTypes[8],
+        currentPage: "Sleep",
+        sleepInterval: action.payload
       };
     case "MAKE_TAMMY_STOP_SLEEP":
       // console.log(" in MAKE_TAMMY_STOP_SLEEP");
+      clearInterval(state.sleepInterval);
       return {
         ...state,
         isTammySleeping: false,
-        spriteAnimation: whatIsTammyMoodAnimation()
+        spriteAnimation: whatIsTammyMoodAnimation(),
+        currentPage: "Home",
+        sleepInterval: undefined
       };
     case "MAKE_TAMMY_PLAY":
       // console.log(" in MAKE_TAMMY_PLAY");
@@ -85,7 +116,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         isTammyPlaying: true,
-        spriteAnimation: SpriteTable.animationTypes[3]
+        spriteAnimation: SpriteTable.animationTypes[12]
       };
     case "MAKE_TAMMY_STOP_PLAY":
       // console.log(" in MAKE_TAMMY_STOP_PLAY");
@@ -93,6 +124,42 @@ function reducer(state = initState, action) {
         ...state,
         isTammyPlaying: false,
         spriteAnimation: whatIsTammyMoodAnimation()
+      };
+    case "MAKE_TAMMY_WALK":
+      return {
+        ...state,
+        currentPage: "Walk",
+        isTammyPlaying: true,
+        spriteAnimation: SpriteTable.animationTypes[1],
+        walkInterval: action.payload
+      };
+    case "MAKE_TAMMY_STOP_WALK":
+      clearInterval(state.walkInterval);
+      return {
+        ...state,
+        currentPage: "Home",
+        isTammyPlaying: false,
+        spriteAnimation: whatIsTammyMoodAnimation(),
+        walkInterval: undefined
+      };
+    case "MAKE_TAMMY_JUMP":
+      // console.log(" in MAKE_TAMMY_JUMP");
+      return {
+        ...state,
+        isTammyInUselessAnimation: true,
+        spriteAnimation: SpriteTable.animationTypes[7]
+      };
+    case "MAKE_TAMMY_STOP_JUMP":
+      // console.log(" in MAKE_TAMMY_STOP_JUMP");
+      return {
+        ...state,
+        isTammyInUselessAnimation: false,
+        spriteAnimation: whatIsTammyMoodAnimation()
+      };
+    case "DISPLAY_MESSAGE":
+      return {
+        ...state,
+        displayMessage: action.payload
       };
     case "ALL_STATUS_UPDATE":
       // console.log(" in ALL_STATUS_UPDATE");
