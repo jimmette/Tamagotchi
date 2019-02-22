@@ -1,12 +1,14 @@
 import myStore from "./Store";
 import CONSTANTS from "./Constants";
 
-let satietyLossRate = -CONSTANTS.satiety_level_max_points / (1 * 60);
+let satietyLossRate = -CONSTANTS.satiety_level_max_points / (100 * 60);
+
 let satietyGainRate = (15 / CONSTANTS.eat_timer) * 1000;
 let energyLossRate = -CONSTANTS.energy_level_max_points / (100 * 60);
 let energyGainRate = (20 / CONSTANTS.sleep_timer) * 1000;
-let joyLossRate = -CONSTANTS.joy_level_max_points / (100 * 60);
-let joyGainRate = (15 / CONSTANTS.play_timer) * 1000;
+let joyLossRate = -CONSTANTS.joy_level_max_points / (1 * 60);
+let joyGainRate = (5 / CONSTANTS.play_timer) * 1000;
+let joyGainRateWhenWalking = 2;
 
 let isTammyDoingSomething = () => {
   if (myStore.getState().isTammyInUselessAnimation === true) return true;
@@ -121,7 +123,15 @@ let gameEngine = () => {
       ? energyGainRate
       : energyLossRate;
   let joyLevel =
-    myStore.getState().isTammyPlaying === true ? joyGainRate : joyLossRate;
+    myStore.getState().isTammyPlaying === true &&
+    myStore.getState().isTammyWalking === false
+      ? joyGainRate
+      : joyLossRate;
+  joyLevel =
+    myStore.getState().isTammyWalking === true &&
+    myStore.getState().hasStepIncreased === true
+      ? joyGainRateWhenWalking
+      : joyLossRate;
 
   // console.log("rate:", satietyRate, energyRate, joyLevel);
   // console.log(

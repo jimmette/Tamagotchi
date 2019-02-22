@@ -10,11 +10,11 @@ const CONSTANTS = {
   energy_level_max_points: 100,
   joy_level_max_points: 100,
 
-  eat_timer: 4000,
+  eat_timer: 6000,
   sleep_timer: 10000,
-  yawn_timer: 2000,
+  yawn_timer: 3500,
   play_timer: 4000,
-  jump_timer: 4000,
+  jump_timer: 4500,
   animation_interruption_messages: 4000
 };
 

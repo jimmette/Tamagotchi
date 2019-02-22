@@ -10,12 +10,13 @@ const initState = {
   isTammyEating: false,
   isTammySleeping: false,
   isTammyPlaying: false,
+  isTammyWalking: false,
+  hasStepIncreased: false,
   isTammyMad: false,
   isTammyWeak: false,
   spriteAnimation: SpriteTable.animationTypes[0],
   currentPage: "Home",
   howMuchHasTammyWalked: 0,
-  howLongHasTammyWalked: 0,
   displayMessage: "",
   sleepInterval: undefined,
   walkInterval: undefined,
@@ -61,7 +62,7 @@ function reducer(state = initState, action) {
         spriteAnimation: SpriteTable.animationTypes[0]
       };
     case "MAKE_TAMMY_EAT":
-      console.log(" in MAKE_TAMMY_EAT");
+      // console.log(" in MAKE_TAMMY_EAT");
       return {
         ...state,
         isTammyEating: true,
@@ -69,7 +70,7 @@ function reducer(state = initState, action) {
         eatTimeout: action.payload
       };
     case "MAKE_TAMMY_STOP_EAT":
-      console.log(" in MAKE_TAMMY_STOP_EAT");
+      // console.log(" in MAKE_TAMMY_STOP_EAT");
       clearTimeout(state.eatTimeout);
       return {
         ...state,
@@ -130,6 +131,7 @@ function reducer(state = initState, action) {
         ...state,
         currentPage: "Walk",
         isTammyPlaying: true,
+        isTammyWalking: true,
         spriteAnimation: SpriteTable.animationTypes[1],
         walkInterval: action.payload
       };
@@ -139,8 +141,11 @@ function reducer(state = initState, action) {
         ...state,
         currentPage: "Home",
         isTammyPlaying: false,
+        isTammyWalking: false,
+        hasStepIncreased: false,
         spriteAnimation: whatIsTammyMoodAnimation(),
-        walkInterval: undefined
+        walkInterval: undefined,
+        howMuchHasTammyWalked: state.howMuchHasTammyWalked + action.steps
       };
     case "MAKE_TAMMY_JUMP":
       // console.log(" in MAKE_TAMMY_JUMP");
@@ -161,6 +166,8 @@ function reducer(state = initState, action) {
         ...state,
         displayMessage: action.payload
       };
+    case "INCREASE_STEPS":
+      return { ...state, hasStepIncreased: action.payload };
     case "ALL_STATUS_UPDATE":
       // console.log(" in ALL_STATUS_UPDATE");
       let newSatietyLevel = state.satietyLevel + action.satietyRate;

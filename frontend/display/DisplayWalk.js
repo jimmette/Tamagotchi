@@ -1,33 +1,73 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Text, Button } from "native-base";
+import { Container, Text, Button, View } from "native-base";
 import CONSTANTS from "../Constants";
 import moment from "moment";
-import AnimatedMarkers from "./AnimatedMarkers";
+import { Pedometer } from "expo";
 
 class DisplayWalk extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       startTime: moment(),
-      currentTime: moment()
+      currentTime: moment(),
+      isPedometerAvailable: "checking",
+      currentStepCount: 0,
+      hasStepIncreased: false
     };
   }
 
   componentDidMount = () => {
     this.props.dispatch({ type: "MAKE_TAMMY_JUMP" });
+    let result = setInterval(() => {
+      this.props.dispatch({
+        type: "INCREASE_STEPS",
+        payload: this.state.hasStepIncreased
+      });
+      this.setState({ currentTime: moment(), hasStepIncreased: false });
+    }, 1000);
     setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
-      let result = setInterval(() => {
-        console.log("walk setInterval");
-        this.setState({ currentTime: moment() });
-      }, 1000);
       this.props.dispatch({ type: "MAKE_TAMMY_WALK", payload: result });
     }, CONSTANTS.jump_timer);
+
+    this._subscribe();
+  };
+
+  _subscribe = () => {
+    this._subscription = Pedometer.watchStepCount(result => {
+      let test = result.steps !== this.state.currentStepCount;
+      this.setState({
+        currentStepCount: result.steps,
+        hasStepIncreased: test
+      });
+    });
+
+    Pedometer.isAvailableAsync().then(
+      result => {
+        this.setState({
+          isPedometerAvailable: String(result)
+        });
+      },
+      error => {
+        this.setState({
+          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
+        });
+      }
+    );
+  };
+
+  _unsubscribe = () => {
+    this._subscription && this._subscription.remove();
+    this._subscription = null;
   };
 
   handleOnPressStopWalking = () => {
-    this.props.dispatch({ type: "MAKE_TAMMY_STOP_WALK" });
+    this._unsubscribe();
+    this.props.dispatch({
+      type: "MAKE_TAMMY_STOP_WALK",
+      steps: this.state.currentStepCount
+    });
   };
 
   getTimer = () => {
@@ -42,7 +82,7 @@ class DisplayWalk extends React.Component {
   };
 
   render() {
-    console.log("in display walk");
+    // console.log("in display walk");
     return (
       <Container
         style={{
@@ -54,7 +94,11 @@ class DisplayWalk extends React.Component {
           maxHeight: 100
         }}
       >
-        <AnimatedMarkers />
+        <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
+        <Text>
+          How much ever:{" "}
+          {this.props.howMuchHasTammyWalked + this.state.currentStepCount}
+        </Text>
         <Text>Time: {this.getTimer()}</Text>
         <Button
           full
@@ -69,7 +113,9 @@ class DisplayWalk extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    howMuchHasTammyWalked: state.howMuchHasTammyWalked
+  };
 };
 
 export default connect(mapStateToProps)(DisplayWalk);
