@@ -1,7 +1,7 @@
 import myStore from "./Store";
 import CONSTANTS from "./Constants";
 
-let satietyLossRate = -CONSTANTS.satiety_level_max_points / (100 * 60);
+let satietyLossRate = -CONSTANTS.satiety_level_max_points / (1 * 60);
 let satietyGainRate = (15 / CONSTANTS.eat_timer) * 1000;
 let energyLossRate = -CONSTANTS.energy_level_max_points / (100 * 60);
 let energyGainRate = (20 / CONSTANTS.sleep_timer) * 1000;

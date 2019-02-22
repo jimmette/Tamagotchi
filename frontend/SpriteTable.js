@@ -14,7 +14,8 @@ const SpriteTable = {
     "SULKING", //09
     "CRYING", //10
     "SAD", //11
-    "PET_HAPPY" //12
+    "PET_HAPPY", //12
+    "MESSY_EAT" //13
   ],
   frames: [
     require("./assets/images/sprites/sprite000.png"),
@@ -62,7 +63,11 @@ const SpriteTable = {
     require("./assets/images/sprites/sprite042.png"),
     require("./assets/images/sprites/sprite043.png"),
     require("./assets/images/sprites/sprite044.png"),
-    require("./assets/images/sprites/sprite045.png")
+    require("./assets/images/sprites/sprite045.png"),
+    require("./assets/images/sprites/sprite046.png"),
+    require("./assets/images/sprites/sprite047.png"),
+    require("./assets/images/sprites/sprite048.png"),
+    require("./assets/images/sprites/sprite049.png")
   ],
   animationIndex: function getAnimationIndex(animationType) {
     switch (animationType) {
@@ -92,6 +97,8 @@ const SpriteTable = {
         return [41];
       case "PET_HAPPY":
         return [42, 43, 44, 45];
+      case "MESSY_EAT":
+        return [46, 47, 48, 49];
       default:
         return [];
     }

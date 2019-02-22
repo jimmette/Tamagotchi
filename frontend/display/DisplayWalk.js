@@ -1,16 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Text, Button, View, Fab, Icon } from "native-base";
+import { Container, Text, Button } from "native-base";
 import CONSTANTS from "../Constants";
-import { Platform } from "react-native";
-import { Constants, Location, Permissions } from "expo";
 import moment from "moment";
-// import { Button } from "react-native";
+import AnimatedMarkers from "./AnimatedMarkers";
 
 class DisplayWalk extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { startTime: moment(), currentTime: moment() };
+    this.state = {
+      startTime: moment(),
+      currentTime: moment()
+    };
   }
 
   componentDidMount = () => {
@@ -30,12 +31,12 @@ class DisplayWalk extends React.Component {
   };
 
   getTimer = () => {
-    let prev = this.state.startTime.toObject();
-    let cur = this.state.currentTime.toObject();
+    let prev = this.state.startTime;
+    let cur = this.state.currentTime;
 
-    let hours = ("0" + (cur.hours - prev.hours)).slice(-2);
-    let minutes = ("0" + (cur.minutes - prev.minutes)).slice(-2);
-    let seconds = ("0" + (cur.seconds - prev.seconds)).slice(-2);
+    let hours = ("0" + cur.diff(prev, "hours")).slice(-2);
+    let minutes = ("0" + cur.diff(prev, "minutes")).slice(-2);
+    let seconds = ("0" + cur.diff(prev, "seconds")).slice(-2);
 
     return hours + ":" + minutes + ":" + seconds;
   };
@@ -53,7 +54,7 @@ class DisplayWalk extends React.Component {
           maxHeight: 100
         }}
       >
-        <Text>Distance: 0m</Text>
+        <AnimatedMarkers />
         <Text>Time: {this.getTimer()}</Text>
         <Button
           full

@@ -65,7 +65,7 @@ function reducer(state = initState, action) {
       return {
         ...state,
         isTammyEating: true,
-        spriteAnimation: SpriteTable.animationTypes[3],
+        spriteAnimation: SpriteTable.animationTypes[13],
         eatTimeout: action.payload
       };
     case "MAKE_TAMMY_STOP_EAT":

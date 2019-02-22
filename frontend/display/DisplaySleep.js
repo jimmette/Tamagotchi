@@ -27,12 +27,12 @@ class DisplayWalk extends React.Component {
   };
 
   getTimer = () => {
-    let prev = this.state.startTime.toObject();
-    let cur = this.state.currentTime.toObject();
+    let prev = this.state.startTime;
+    let cur = this.state.currentTime;
 
-    let hours = ("0" + (cur.hours - prev.hours)).slice(-2);
-    let minutes = ("0" + (cur.minutes - prev.minutes)).slice(-2);
-    let seconds = ("0" + (cur.seconds - prev.seconds)).slice(-2);
+    let hours = ("0" + cur.diff(prev, "hours")).slice(-2);
+    let minutes = ("0" + cur.diff(prev, "minutes")).slice(-2);
+    let seconds = ("0" + cur.diff(prev, "seconds")).slice(-2);
 
     return hours + ":" + minutes + ":" + seconds;
   };
