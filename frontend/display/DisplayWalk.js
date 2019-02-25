@@ -10,10 +10,10 @@ class DisplayWalk extends React.Component {
     super(props);
     this.state = {
       startTime: moment(),
-      currentTime: moment(),
       isPedometerAvailable: "checking",
       currentStepCount: 0,
-      hasStepIncreased: false
+      hasStepIncreased: false,
+      isTammyLooting: false
     };
   }
 
@@ -24,7 +24,7 @@ class DisplayWalk extends React.Component {
         type: "INCREASE_STEPS",
         payload: this.state.hasStepIncreased
       });
-      this.setState({ currentTime: moment(), hasStepIncreased: false });
+      this.setState({ hasStepIncreased: false });
     }, 1000);
     setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
@@ -34,6 +34,41 @@ class DisplayWalk extends React.Component {
     this._subscribe();
   };
 
+  doLootMagicStuff = () => {
+    if (
+      moment().diff(this.state.startTime, "minutes") <
+      CONSTANTS.loot_start_timer
+    ) {
+      return undefined;
+    }
+    if (this.state.isTammyLooting === true) {
+      return undefined;
+    }
+
+    let dice = Math.floor(Math.random() * 20);
+    switch (dice) {
+      case 0:
+        this.props.dispatch({ type: "BOOST_TAMMY_SATIETY" });
+        this.setState({ isTammyLooting: true });
+        setTimeout(() => {
+          this.props.dispatch({ type: "STOP_BOOST_TAMMY_SATIETY" });
+          this.setState({ isTammyLooting: false });
+        }, CONSTANTS.boost_timer);
+        break;
+      case 1:
+        this.props.dispatch({ type: "BOOST_TAMMY_ENERGY" });
+        this.setState({ isTammyLooting: true });
+        setTimeout(() => {
+          this.props.dispatch({ type: "STOP_BOOST_TAMMY_ENERGY" });
+          this.setState({ isTammyLooting: false });
+        }, CONSTANTS.boost_timer);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       let test = result.steps !== this.state.currentStepCount;
@@ -41,6 +76,8 @@ class DisplayWalk extends React.Component {
         currentStepCount: result.steps,
         hasStepIncreased: test
       });
+      //Des a loot needs to drop
+      this.doLootMagicStuff();
     });
 
     Pedometer.isAvailableAsync().then(
@@ -68,11 +105,12 @@ class DisplayWalk extends React.Component {
       type: "MAKE_TAMMY_STOP_WALK",
       steps: this.state.currentStepCount
     });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
   };
 
   getTimer = () => {
     let prev = this.state.startTime;
-    let cur = this.state.currentTime;
+    let cur = moment();
 
     let hours = ("0" + cur.diff(prev, "hours")).slice(-2);
     let minutes = ("0" + cur.diff(prev, "minutes")).slice(-2);

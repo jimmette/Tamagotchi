@@ -1,20 +1,15 @@
+import { AsyncStorage } from "react-native";
 import myStore from "./Store";
 import CONSTANTS from "./Constants";
-
-let satietyLossRate = -CONSTANTS.satiety_level_max_points / (100 * 60);
-
-let satietyGainRate = (15 / CONSTANTS.eat_timer) * 1000;
-let energyLossRate = -CONSTANTS.energy_level_max_points / (100 * 60);
-let energyGainRate = (20 / CONSTANTS.sleep_timer) * 1000;
-let joyLossRate = -CONSTANTS.joy_level_max_points / (1 * 60);
-let joyGainRate = (5 / CONSTANTS.play_timer) * 1000;
-let joyGainRateWhenWalking = 2;
+import { NORMAL_RATES, WALKING_RATES } from "./Constants";
+import moment from "moment";
 
 let isTammyDoingSomething = () => {
   if (myStore.getState().isTammyInUselessAnimation === true) return true;
   if (myStore.getState().isTammyEating === true) return true;
   if (myStore.getState().isTammySleeping === true) return true;
   if (myStore.getState().isTammyPlaying === true) return true;
+  if (myStore.getState().isTammyWalking === true) return true;
   return false;
 };
 
@@ -26,10 +21,9 @@ let doesTammyNeedsToBeMad = () => {
       myStore.getState().energyLevel < 1 ||
       myStore.getState().joyLevel < 1)
   ) {
-    return true;
+    myStore.dispatch({ type: "MAKE_TAMMY_MAD" });
   }
   // console.log("Tammy does not need to be mad");
-  return false;
 };
 
 let doesTammyNeedsToBeWeak = () => {
@@ -40,10 +34,15 @@ let doesTammyNeedsToBeWeak = () => {
       myStore.getState().energyLevel < 40 ||
       myStore.getState().joyLevel < 40)
   ) {
-    return true;
+    myStore.dispatch({ type: "MAKE_TAMMY_WEAK" });
   }
   // console.log("Tammy does not need to be weak");
-  return false;
+};
+
+let doesTammyNeedsToYawn = () => {
+  if (myStore.getState().isTammyWeak === false) return false;
+
+  //make the stuff
 };
 
 let doesTammyNeedsToStopBeingMadOrWeak = () => {
@@ -55,10 +54,9 @@ let doesTammyNeedsToStopBeingMadOrWeak = () => {
       myStore.getState().energyLevel > 50 &&
       myStore.getState().joyLevel > 50)
   ) {
-    return true;
+    myStore.dispatch({ type: "MAKE_TAMMY_NOT_MAD_OR_WEAK" });
   }
   // console.log("Tammy does not need to stop being mad or weak");
-  return false;
 };
 
 doesTammyNeedsToStopEating = () => {
@@ -86,6 +84,7 @@ doesTammyNeedsToStopSleeping = () => {
     myStore.getState().energyLevel === CONSTANTS.energy_level_max_points
   ) {
     myStore.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
+    myStore.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
     //Display I'm well rested. Thank you!
     myStore.dispatch({
       type: "DISPLAY_MESSAGE",
@@ -97,43 +96,64 @@ doesTammyNeedsToStopSleeping = () => {
   }
 };
 
-let gameEngine = () => {
-  //is Tammy mad or weak?
-  //does Tammy needs to stop being mad or weak?
-  if (doesTammyNeedsToBeMad()) {
-    // console.log("Tammy mad!");
-    myStore.dispatch({ type: "MAKE_TAMMY_MAD" });
-  } else if (doesTammyNeedsToBeWeak()) {
-    // console.log("Tammy weak!");
-    myStore.dispatch({ type: "MAKE_TAMMY_WEAK" });
-  } else if (doesTammyNeedsToStopBeingMadOrWeak()) {
-    // console.log("Tammy better");
-    myStore.dispatch({ type: "MAKE_TAMMY_NOT_MAD_OR_WEAK" });
+_storeData = async () => {
+  let data = JSON.stringify({
+    saveTime: moment(),
+    tammyName: myStore.getState().tammyName,
+    tammyWasBornOn: myStore.getState().tammyWasBornOn,
+    satietyLevel: myStore.getState().satietyLevel,
+    energyLevel: myStore.getState().energyLevel,
+    joyLevel: myStore.getState().joyLevel,
+    howMuchHasTammyWalked: myStore.getState().howMuchHasTammyWalked
+  });
+  try {
+    await AsyncStorage.setItem("State", data);
+  } catch (error) {
+    // Error saving data
+    console.log("error saving data");
   }
+};
 
+let gameEngine = () => {
+  // _storeData();
+
+  doesTammyNeedsToBeMad();
+  doesTammyNeedsToBeWeak();
+  doesTammyNeedsToYawn(); //Pas encore fait
+  doesTammyNeedsToStopBeingMadOrWeak();
   doesTammyNeedsToStopEating();
   doesTammyNeedsToStopSleeping();
 
-  let satietyRate =
-    myStore.getState().isTammyEating === true
-      ? satietyGainRate
-      : satietyLossRate;
-  let energyRate =
-    myStore.getState().isTammySleeping === true
-      ? energyGainRate
-      : energyLossRate;
-  let joyLevel =
-    myStore.getState().isTammyPlaying === true &&
-    myStore.getState().isTammyWalking === false
-      ? joyGainRate
-      : joyLossRate;
-  joyLevel =
-    myStore.getState().isTammyWalking === true &&
-    myStore.getState().hasStepIncreased === true
-      ? joyGainRateWhenWalking
-      : joyLossRate;
+  let satietyRate = NORMAL_RATES.satietyLossRate;
+  let energyRate = NORMAL_RATES.energyLossRate;
+  let joyRate = NORMAL_RATES.joyLossRate;
 
-  // console.log("rate:", satietyRate, energyRate, joyLevel);
+  if (myStore.getState().isTammyWalking === true) {
+    // console.log("in isTammyWalking = true");
+    satietyRate =
+      myStore.getState().isTammyEating === true
+        ? WALKING_RATES.satietyGainRateWhenWalking
+        : WALKING_RATES.satietyLossRateWhenWalking;
+    energyRate =
+      myStore.getState().isTammySleeping === true
+        ? WALKING_RATES.energyGainRateWhenWalking
+        : WALKING_RATES.energyLossRateWhenWalking;
+    joyRate =
+      myStore.getState().hasStepIncreased === true
+        ? WALKING_RATES.joyGainRateWhenWalking
+        : WALKING_RATES.joyLossRateWhenWalking;
+  } else if (myStore.getState().isTammyEating === true) {
+    // console.log("in isTammyEating = true");
+    satietyRate = NORMAL_RATES.satietyGainRate;
+  } else if (myStore.getState().isTammySleeping === true) {
+    // console.log("in isTammySleeping = true");
+    energyRate = NORMAL_RATES.energyGainRate;
+  } else if (myStore.getState().isTammyPlaying === true) {
+    // console.log("in isTammyPlaying = true");
+    joyRate = NORMAL_RATES.joyGainRate;
+  }
+
+  // console.log("rate:", satietyRate, energyRate, joyRate);
   // console.log(
   //   "points:",
   //   myStore.getState().satietyLevel,
@@ -146,7 +166,7 @@ let gameEngine = () => {
     type: "ALL_STATUS_UPDATE",
     satietyRate: satietyRate,
     energyRate: energyRate,
-    joyLevel: joyLevel
+    joyRate: joyRate
   });
 };
 

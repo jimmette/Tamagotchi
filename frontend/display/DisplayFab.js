@@ -16,14 +16,13 @@ class DisplayFab extends React.Component {
   handleOnPressEatApple = () => {
     this.setState({ activeEat: false });
     let result = setTimeout(() => {
-      console.log("in setTimout");
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
     }, CONSTANTS.eat_timer);
     this.props.dispatch({ type: "MAKE_TAMMY_EAT", payload: result });
   };
   handleOnPressSleep = () => {
     this.setState({ activeSleep: false });
-    this.props.dispatch({ type: "MAKE_TAMMY_SLEEP" });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Sleep" });
   };
   handleOnPressPlayPets = () => {
     this.setState({ activePlay: false });
@@ -33,7 +32,7 @@ class DisplayFab extends React.Component {
     }, CONSTANTS.play_timer);
   };
   handleOnPressPlayWalk = () => {
-    this.props.dispatch({ type: "MAKE_TAMMY_WALK" });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Walk" });
   };
 
   isTammyEatDisabled = () => {

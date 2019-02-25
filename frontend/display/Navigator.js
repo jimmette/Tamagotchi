@@ -8,63 +8,105 @@ import DisplayStatus from "./DisplayStatus";
 import SpriteAnimation from "../SpriteAnimation";
 import DisplayWalk from "./DisplayWalk";
 import DisplaySleep from "./DisplaySleep";
+import DisplaySettings from "./DisplaySettings";
+import DisplayStats from "./DisplayStats";
+import DisplayInventory from "./DisplayInventory";
 import CONSTANTS from "../Constants";
 
 class Navigator extends React.Component {
+  displayHomepage = () => {
+    return (
+      <>
+        <Content>
+          <DisplayStatus />
+          <Text
+            style={{
+              marginTop: 15,
+              width: CONSTANTS.app_width,
+              textAlign: "center",
+              fontWeight: "bold"
+            }}
+          >
+            {this.props.displayMessage}
+          </Text>
+          <SpriteAnimation
+            top={100}
+            left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
+          />
+        </Content>
+        <DisplayFab />
+      </>
+    );
+  };
+  displayWalk = () => {
+    return (
+      <>
+        <Content>
+          <DisplayStatus />
+          <SpriteAnimation
+            top={100}
+            left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
+          />
+        </Content>
+        <DisplayWalk />
+      </>
+    );
+  };
+  displaySleep = () => {
+    return (
+      <>
+        <Content>
+          <DisplayStatus />
+          <SpriteAnimation
+            top={100}
+            left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
+          />
+        </Content>
+        <DisplaySleep />
+      </>
+    );
+  };
+  displaySettings = () => {
+    return (
+      <Content>
+        <DisplaySettings />
+      </Content>
+    );
+  };
+  displayStats = () => {
+    return (
+      <Content>
+        <DisplayStats />
+      </Content>
+    );
+  };
+  displayInventory = () => {
+    return (
+      <Content>
+        <DisplayInventory />
+      </Content>
+    );
+  };
   renderContent = () => {
     switch (this.props.currentPage) {
       case "Home":
-        return (
-          <>
-            <Content>
-              <DisplayStatus />
-              <Text
-                style={{
-                  marginTop: 15,
-                  width: CONSTANTS.app_width,
-                  textAlign: "center",
-                  fontWeight: "bold"
-                }}
-              >
-                {this.props.displayMessage}
-              </Text>
-              <SpriteAnimation
-                top={100}
-                left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
-              />
-            </Content>
-            <DisplayFab />
-          </>
-        );
+        return this.displayHomepage();
       case "Walk":
-        return (
-          <>
-            <Content>
-              <DisplayStatus />
-              <SpriteAnimation
-                top={100}
-                left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
-              />
-            </Content>
-            <DisplayWalk />
-          </>
-        );
+        return this.displayWalk();
       case "Sleep":
-        return (
-          <>
-            <Content>
-              <DisplayStatus />
-              <SpriteAnimation
-                top={100}
-                left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
-              />
-            </Content>
-            <DisplaySleep />
-          </>
-        );
-
+        return this.displaySleep();
+      case "Settings":
+        return this.displaySettings();
+      case "Stats":
+        return this.displayStats();
+      case "Inventory":
+        return this.displayInventory();
       default:
-        return <View />;
+        return (
+          <View>
+            <Text>This page does not exist</Text>
+          </View>
+        );
     }
   };
 

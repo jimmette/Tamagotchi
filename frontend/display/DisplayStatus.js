@@ -19,7 +19,10 @@ class DisplayStatus extends React.Component {
     super();
   }
   render() {
-    const { satietyLevel, energyLevel, joyLevel } = this.props;
+    let { satietyLevel, energyLevel, joyLevel } = this.props;
+    satietyLevel = satietyLevel === undefined ? 100 : satietyLevel;
+    energyLevel = energyLevel === undefined ? 100 : energyLevel;
+    joyLevel = joyLevel === undefined ? 100 : joyLevel;
 
     const styles = StyleSheet.create({
       status: {
@@ -63,7 +66,7 @@ class DisplayStatus extends React.Component {
         overflow: "hidden",
         width: "100%"
       },
-      hungerFill: {
+      satietyFill: {
         // display: "block",
         height: 20,
         backgroundColor: `${gradient[Math.floor(satietyLevel / 20)]}`,
@@ -91,7 +94,7 @@ class DisplayStatus extends React.Component {
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Satiety</Text>
           <View style={styles.statusBarIndicator}>
-            <View style={styles.hungerFill} />
+            <View style={styles.satietyFill} />
           </View>
         </View>
         <View style={styles.statusBar}>

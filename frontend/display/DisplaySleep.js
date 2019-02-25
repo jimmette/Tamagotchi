@@ -12,6 +12,7 @@ class DisplayWalk extends React.Component {
   }
   handleOnPressStopSleeping = () => {
     this.props.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
   };
 
   componentDidMount = () => {
@@ -19,7 +20,6 @@ class DisplayWalk extends React.Component {
     setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_YAWN" });
       let result = setInterval(() => {
-        console.log("sleep setInterval");
         this.setState({ currentTime: moment() });
       }, 1000);
       this.props.dispatch({ type: "MAKE_TAMMY_SLEEP", payload: result });
