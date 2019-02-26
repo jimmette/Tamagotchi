@@ -8,31 +8,46 @@ import moment from "moment";
 class DisplayWalk extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { startTime: moment(), currentTime: moment() };
+    this.state = { startTime: new Date(), currentTime: new Date() };
+    this.yawnTimeout = undefined;
+    this.sleepInterval = undefined;
   }
   handleOnPressStopSleeping = () => {
-    this.props.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
+    this.props.dispatch({
+      type: "MAKE_TAMMY_STOP_SLEEP",
+      time: moment().diff(moment(this.state.startTime, "minutes"))
+    });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
   };
 
   componentDidMount = () => {
+    this.sleepInterval = setInterval(() => {
+      this.setState({ currentTime: new Date() });
+    }, 1000);
     this.props.dispatch({ type: "MAKE_TAMMY_YAWN" });
-    setTimeout(() => {
+    this.yawnTimeout = setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_YAWN" });
-      let result = setInterval(() => {
-        this.setState({ currentTime: moment() });
-      }, 1000);
-      this.props.dispatch({ type: "MAKE_TAMMY_SLEEP", payload: result });
+      this.props.dispatch({ type: "MAKE_TAMMY_SLEEP" });
     }, CONSTANTS.yawn_timer);
+  };
+
+  componentWillUnmount = () => {
+    if (this.yawnTimeout) {
+      clearTimeout(this.yawnTimeout);
+      this.props.dispatch({ type: "MAKE_TAMMY_STOP_YAWN" });
+    }
+
+    if (this.sleepInterval) {
+      clearInterval(this.sleepInterval);
+    }
   };
 
   getTimer = () => {
     let prev = this.state.startTime;
-    let cur = this.state.currentTime;
 
-    let hours = ("0" + cur.diff(prev, "hours")).slice(-2);
-    let minutes = ("0" + cur.diff(prev, "minutes")).slice(-2);
-    let seconds = ("0" + cur.diff(prev, "seconds")).slice(-2);
+    let hours = ("0" + moment().diff(moment(prev), "hours")).slice(-2);
+    let minutes = ("0" + moment().diff(moment(prev), "minutes")).slice(-2);
+    let seconds = ("0" + moment().diff(moment(prev), "seconds")).slice(-2);
 
     return hours + ":" + minutes + ":" + seconds;
   };

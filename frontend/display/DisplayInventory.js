@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { View, Text, Button, H1 } from "native-base";
+import CONSTANTS from "../Constants";
 
 class DisplayInventory extends React.Component {
   handleOnPressCloseInventory = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
   };
   render = () => {
     return (

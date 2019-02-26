@@ -1,19 +1,74 @@
 import React from "react";
 import { Container, View, Content, Text } from "native-base";
 import { connect } from "react-redux";
-import DisplayHeader from "./DisplayHeader";
-import DisplayFab from "./DisplayFab";
-import DisplayFooter from "./DisplayFooter";
-import DisplayStatus from "./DisplayStatus";
-import SpriteAnimation from "../SpriteAnimation";
-import DisplayWalk from "./DisplayWalk";
-import DisplaySleep from "./DisplaySleep";
-import DisplaySettings from "./DisplaySettings";
-import DisplayStats from "./DisplayStats";
-import DisplayInventory from "./DisplayInventory";
-import CONSTANTS from "../Constants";
+import DisplayHeader from "./display/DisplayHeader";
+import DisplayFab from "./display/DisplayFab";
+import DisplayFooter from "./display/DisplayFooter";
+import DisplayStatus from "./display/DisplayStatus";
+import SpriteAnimation from "./SpriteAnimation";
+import DisplayWalk from "./display/DisplayWalk";
+import DisplaySleep from "./display/DisplaySleep";
+import DisplaySettings from "./display/DisplaySettings";
+import DisplayStats from "./display/DisplayStats";
+import DisplayInventory from "./display/DisplayInventory";
+import gameEngine from "./GameEngine";
+import { isTammyDoingSomething } from "./GameEngine";
+import CONSTANTS from "./Constants";
+import { _retrieveDataLocal, _storeDataLocal } from "./JugeMoiPasRichard";
+import { backupTammy, restoreTammy } from "./Networking";
 
-class Navigator extends React.Component {
+class AppControler extends React.Component {
+  constructor(props) {
+    super(props);
+    // _removeDataLocal();
+    // deleteTammy();
+    this.gameEngineInterval = setInterval(
+      gameEngine,
+      CONSTANTS.game_engine_timer
+    );
+
+    this.storeDataLocalInterval = setInterval(() => {
+      if (isTammyDoingSomething() === false) {
+        _storeDataLocal();
+      }
+    }, 1000);
+    this.storeDataOnlineInterval = undefined;
+  }
+  componentDidMount = async () => {
+    await _retrieveDataLocal();
+    this.displayWelcomeMessage();
+  };
+
+  componentDidUpdate = () => {
+    if (
+      this.props.allowOnlineSync === true &&
+      this.storeDataOnlineInterval === undefined
+    ) {
+      this.storeDataOnlineInterval = setInterval(() => {
+        if (isTammyDoingSomething() === false) {
+          backupTammy();
+        }
+      }, 10000);
+    }
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.gameEngineInterval);
+    clearInterval(this.storeDataLocalInterval);
+    if (this.storeDataOnlineInterval) {
+      clearInterval(this.storeDataOnlineInterval);
+    }
+  };
+
+  displayWelcomeMessage = () => {
+    this.props.dispatch({
+      type: "DISPLAY_MESSAGE",
+      payload: "Hello! So good to see you!"
+    });
+    setTimeout(() => {
+      this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
+    }, CONSTANTS.animation_interruption_messages);
+  };
   displayHomepage = () => {
     return (
       <>
@@ -124,8 +179,10 @@ class Navigator extends React.Component {
 const mapStateToProps = state => {
   return {
     currentPage: state.currentPage,
-    displayMessage: state.displayMessage
+    displayMessage: state.displayMessage,
+    allowOnlineSync: state.allowOnlineSync,
+    _id: state._id
   };
 };
 
-export default connect(mapStateToProps)(Navigator);
+export default connect(mapStateToProps)(AppControler);

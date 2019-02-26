@@ -9,29 +9,52 @@ class DisplayWalk extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startTime: moment(),
+      startTime: new Date(),
       isPedometerAvailable: "checking",
       currentStepCount: 0,
       hasStepIncreased: false,
       isTammyLooting: false
     };
+    this.jumpTimeout = undefined;
+    this.walkInterval = undefined;
   }
 
   componentDidMount = () => {
-    this.props.dispatch({ type: "MAKE_TAMMY_JUMP" });
-    let result = setInterval(() => {
+    this.walkInterval = setInterval(() => {
       this.props.dispatch({
         type: "INCREASE_STEPS",
         payload: this.state.hasStepIncreased
       });
       this.setState({ hasStepIncreased: false });
     }, 1000);
-    setTimeout(() => {
+    this.props.dispatch({ type: "MAKE_TAMMY_JUMP" });
+    this.jumpTimeout = setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
-      this.props.dispatch({ type: "MAKE_TAMMY_WALK", payload: result });
+      this.props.dispatch({ type: "MAKE_TAMMY_WALK" });
     }, CONSTANTS.jump_timer);
 
     this._subscribe();
+  };
+
+  componentWillUnmount = () => {
+    if (this.jumpTimeout) {
+      clearTimeout(this.jumpTimeout);
+      this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
+    }
+
+    if (this.walkInterval) {
+      clearInterval(this.walkInterval);
+    }
+  };
+
+  handleOnPressStopWalking = () => {
+    this._unsubscribe();
+    this.props.dispatch({
+      type: "MAKE_TAMMY_STOP_WALK",
+      steps: this.state.currentStepCount,
+      time: moment().diff(moment(this.state.startTime), "minutes")
+    });
+    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
   };
 
   doLootMagicStuff = () => {
@@ -45,7 +68,7 @@ class DisplayWalk extends React.Component {
       return undefined;
     }
 
-    let dice = Math.floor(Math.random() * 20);
+    let dice = Math.floor(Math.random() * 10);
     switch (dice) {
       case 0:
         this.props.dispatch({ type: "BOOST_TAMMY_SATIETY" });
@@ -99,28 +122,17 @@ class DisplayWalk extends React.Component {
     this._subscription = null;
   };
 
-  handleOnPressStopWalking = () => {
-    this._unsubscribe();
-    this.props.dispatch({
-      type: "MAKE_TAMMY_STOP_WALK",
-      steps: this.state.currentStepCount
-    });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
-  };
-
   getTimer = () => {
     let prev = this.state.startTime;
-    let cur = moment();
 
-    let hours = ("0" + cur.diff(prev, "hours")).slice(-2);
-    let minutes = ("0" + cur.diff(prev, "minutes")).slice(-2);
-    let seconds = ("0" + cur.diff(prev, "seconds")).slice(-2);
+    let hours = ("0" + moment().diff(moment(prev), "hours")).slice(-2);
+    let minutes = ("0" + moment().diff(moment(prev), "minutes")).slice(-2);
+    let seconds = ("0" + moment().diff(moment(prev), "seconds")).slice(-2);
 
     return hours + ":" + minutes + ":" + seconds;
   };
 
   render() {
-    // console.log("in display walk");
     return (
       <Container
         style={{

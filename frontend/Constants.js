@@ -6,6 +6,9 @@ const CONSTANTS = {
   sprite_width: (Dimensions.get("window").width * 2) / 3,
   sprite_height: (Dimensions.get("window").width * 2) / 3,
 
+  homepage: "Home",
+  startpage: "Home",
+
   satiety_level_max_points: 100,
   energy_level_max_points: 100,
   joy_level_max_points: 100,
@@ -21,11 +24,11 @@ const CONSTANTS = {
 };
 
 const NORMAL_RATES = {
-  satietyLossRate: -CONSTANTS.satiety_level_max_points / (5 * 60),
+  satietyLossRate: -CONSTANTS.satiety_level_max_points / (100 * 60),
   satietyGainRate: 2, //(10 / CONSTANTS.eat_timer) * 1000,
-  energyLossRate: -CONSTANTS.energy_level_max_points / (5 * 60),
+  energyLossRate: -CONSTANTS.energy_level_max_points / (100 * 60),
   energyGainRate: 2,
-  joyLossRate: -CONSTANTS.joy_level_max_points / (5 * 60),
+  joyLossRate: -CONSTANTS.joy_level_max_points / (100 * 60),
   joyGainRate: 2 //(10 / CONSTANTS.play_timer) * 1000
 };
 

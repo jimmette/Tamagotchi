@@ -1,8 +1,6 @@
-import { AsyncStorage } from "react-native";
 import myStore from "./Store";
 import CONSTANTS from "./Constants";
 import { NORMAL_RATES, WALKING_RATES } from "./Constants";
-import moment from "moment";
 
 let isTammyDoingSomething = () => {
   if (myStore.getState().isTammyInUselessAnimation === true) return true;
@@ -84,7 +82,7 @@ doesTammyNeedsToStopSleeping = () => {
     myStore.getState().energyLevel === CONSTANTS.energy_level_max_points
   ) {
     myStore.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
-    myStore.dispatch({ type: "CURRENT_PAGE", payload: "Home" });
+    myStore.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
     //Display I'm well rested. Thank you!
     myStore.dispatch({
       type: "DISPLAY_MESSAGE",
@@ -96,27 +94,7 @@ doesTammyNeedsToStopSleeping = () => {
   }
 };
 
-_storeData = async () => {
-  let data = JSON.stringify({
-    saveTime: moment(),
-    tammyName: myStore.getState().tammyName,
-    tammyWasBornOn: myStore.getState().tammyWasBornOn,
-    satietyLevel: myStore.getState().satietyLevel,
-    energyLevel: myStore.getState().energyLevel,
-    joyLevel: myStore.getState().joyLevel,
-    howMuchHasTammyWalked: myStore.getState().howMuchHasTammyWalked
-  });
-  try {
-    await AsyncStorage.setItem("State", data);
-  } catch (error) {
-    // Error saving data
-    console.log("error saving data");
-  }
-};
-
 let gameEngine = () => {
-  // _storeData();
-
   doesTammyNeedsToBeMad();
   doesTammyNeedsToBeWeak();
   doesTammyNeedsToYawn(); //Pas encore fait
@@ -154,12 +132,12 @@ let gameEngine = () => {
   }
 
   // console.log("rate:", satietyRate, energyRate, joyRate);
-  // console.log(
-  //   "points:",
-  //   myStore.getState().satietyLevel,
-  //   myStore.getState().energyLevel,
-  //   myStore.getState().joyLevel
-  // );
+  console.log(
+    "points:",
+    myStore.getState().satietyLevel,
+    myStore.getState().energyLevel,
+    myStore.getState().joyLevel
+  );
   // console.log("isTammyMad", myStore.getState().isTammyMad);
   // console.log("isTammyWeak", myStore.getState().isTammyWeak);
   myStore.dispatch({
