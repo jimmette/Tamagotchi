@@ -3,8 +3,8 @@ import { Dimensions } from "react-native";
 const CONSTANTS = {
   app_width: Dimensions.get("window").width,
   app_height: Dimensions.get("window").height,
-  sprite_width: (Dimensions.get("window").width * 2) / 3,
-  sprite_height: (Dimensions.get("window").width * 2) / 3,
+  sprite_width: (Dimensions.get("window").width * 3) / 4,
+  sprite_height: (Dimensions.get("window").width * 3) / 4,
 
   homepage: "Home",
   startpage: "Home",

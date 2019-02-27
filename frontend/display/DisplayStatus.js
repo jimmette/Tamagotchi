@@ -47,7 +47,7 @@ class DisplayStatus extends React.Component {
         marginRight: 4
       },
       statusBarText: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: "bold",
         marginTop: 0,
         marginLeft: 0,

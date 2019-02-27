@@ -15,20 +15,21 @@ class SpriteAnimation extends React.Component {
       <AnimatedSprite
         ref={"Sprite"}
         fps={2}
+        draggable={false}
         sprite={SpriteTable}
         animationFrameIndex={SpriteTable.animationIndex(
           this.props.spriteAnimation
         )}
         loopAnimation={true}
         coordinates={{
-          top: this.props.top || 0,
+          top: this.props.top + 68 || 0,
           left: this.props.left || 0
         }}
         size={{
           width: CONSTANTS.sprite_width,
           height: CONSTANTS.sprite_height
         }}
-        draggable={true}
+        draggable={false}
         tweenOptions={this.state.tweenOptions}
         tweenStart={"fromMethod"}
         onPress={() => {}}

@@ -1,5 +1,7 @@
 import React from "react";
+import { Font } from "expo";
 import { Container, View, Content, Text } from "native-base";
+import { StyleSheet, ImageBackground } from "react-native";
 import { connect } from "react-redux";
 import DisplayHeader from "./display/DisplayHeader";
 import DisplayFab from "./display/DisplayFab";
@@ -17,9 +19,46 @@ import CONSTANTS from "./Constants";
 import { _retrieveDataLocal, _storeDataLocal } from "./JugeMoiPasRichard";
 import { backupTammy, restoreTammy } from "./Networking";
 
+{
+  /* <ImageBackground
+source={{uri: "require('./assets/images/background.png')"}} 
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          style={{ flex: 1 }}
+        />*/
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#FFF"
+  },
+  bubble_container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#FFF",
+    borderWidth: 6,
+    width: 120,
+    height: 120,
+    borderRadius: 120 / 2,
+    transform: [{ scaleX: 2 }],
+    marginTop: 30,
+    marginLeft: 96,
+    zIndex: 2
+  },
+  text_container: {
+    textAlign: "center",
+    transform: [{ scaleX: 0.5 }],
+    fontFamily: "Gochi",
+    fontSize: 20,
+    paddingLeft: 0,
+    paddingRight: 0
+  }
+});
+
 class AppControler extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { fontLoaded: false };
     // _removeDataLocal();
     // deleteTammy();
     this.gameEngineInterval = setInterval(
@@ -37,6 +76,12 @@ class AppControler extends React.Component {
   componentDidMount = async () => {
     await _retrieveDataLocal();
     this.displayWelcomeMessage();
+
+    await Font.loadAsync({
+      Gochi: require("./assets/fonts/GochiHand-Regular.ttf")
+    });
+
+    this.setState({ fontLoaded: true });
   };
 
   componentDidUpdate = () => {
@@ -61,9 +106,15 @@ class AppControler extends React.Component {
   };
 
   displayWelcomeMessage = () => {
+    let text = "Hello! So good to see you!";
+    if (this.props.isTammyMad === true) {
+      text = "I'm not feeling so good...";
+    } else if (this.props.isTammyWeak === true) {
+      text = "I'm not talking to you right now.";
+    }
     this.props.dispatch({
       type: "DISPLAY_MESSAGE",
-      payload: "Hello! So good to see you!"
+      payload: text
     });
     setTimeout(() => {
       this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
@@ -74,16 +125,15 @@ class AppControler extends React.Component {
       <>
         <Content>
           <DisplayStatus />
-          <Text
-            style={{
-              marginTop: 15,
-              width: CONSTANTS.app_width,
-              textAlign: "center",
-              fontWeight: "bold"
-            }}
-          >
-            {this.props.displayMessage}
-          </Text>
+          {this.props.displayMessage !== "" ? (
+            <View style={styles.bubble_container}>
+              {this.state.fontLoaded ? (
+                <Text style={styles.text_container}>
+                  {this.props.displayMessage}
+                </Text>
+              ) : null}
+            </View>
+          ) : null}
           <SpriteAnimation
             top={100}
             left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
@@ -167,7 +217,7 @@ class AppControler extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={styles.container}>
         <DisplayHeader />
         {this.renderContent()}
         <DisplayFooter />
@@ -181,7 +231,9 @@ const mapStateToProps = state => {
     currentPage: state.currentPage,
     displayMessage: state.displayMessage,
     allowOnlineSync: state.allowOnlineSync,
-    _id: state._id
+    _id: state._id,
+    isTammyMad: state.isTammyMad,
+    isTammyWeak: state.isTammyWeak
   };
 };
 

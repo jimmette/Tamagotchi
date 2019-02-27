@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { View, Text, Button, H1, Form, Input, Item, Label } from "native-base";
 import { Switch } from "react-native";
 import CONSTANTS from "../Constants";
-import { _removeDataLocal } from "./JugeMoiPasRichard";
-import { backupTammy } from "./Networking";
+import { _removeDataLocal } from "../JugeMoiPasRichard";
+import { backupTammy } from "../Networking";
 
 class DisplaySettings extends React.Component {
   handleOnPressResetTheApp = () => {
