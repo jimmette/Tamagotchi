@@ -2,7 +2,7 @@ import myStore from "./Store";
 import CONSTANTS from "./Constants";
 
 let backupTammy = () => {
-  console.log("in backup Tammy");
+  // console.log("in backup Tammy");
   let data = JSON.parse(JSON.stringify(myStore.getState()));
   data.saveTime = new Date();
   data.currentPage = CONSTANTS.homepage;
@@ -24,7 +24,7 @@ let backupTammy = () => {
 };
 
 let restoreTammy = () => {
-  console.log("in restore Tammy");
+  // console.log("in restore Tammy");
   if (myStore.getState()._id !== "") {
     let body = JSON.stringify({ _id: myStore.getState()._id });
     fetch("http://10.65.105.164:4000/restore", {
@@ -36,7 +36,7 @@ let restoreTammy = () => {
       })
       .then(responseBody => {
         let body = JSON.parse("rb", responseBody);
-        console.log(body.state);
+        // console.log(body.state);
         // myStore.dispatch({ type: "RESTORE_DATA", payload: body.state });
       });
   }

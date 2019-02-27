@@ -19,7 +19,7 @@ class DisplayWalk extends React.Component {
     this.walkInterval = undefined;
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.walkInterval = setInterval(() => {
       this.props.dispatch({
         type: "INCREASE_STEPS",
@@ -34,9 +34,9 @@ class DisplayWalk extends React.Component {
     }, CONSTANTS.jump_timer);
 
     this._subscribe();
-  };
+  }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     if (this.jumpTimeout) {
       clearTimeout(this.jumpTimeout);
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
@@ -44,8 +44,17 @@ class DisplayWalk extends React.Component {
 
     if (this.walkInterval) {
       clearInterval(this.walkInterval);
+      this.props.dispatch({
+        type: "MAKE_TAMMY_STOP_WALK",
+        steps: this.state.currentStepCount,
+        time: moment().diff(moment(this.state.startTime), "minutes")
+      });
+      this.props.dispatch({
+        type: "CURRENT_PAGE",
+        payload: CONSTANTS.homepage
+      });
     }
-  };
+  }
 
   handleOnPressStopWalking = () => {
     this._unsubscribe();

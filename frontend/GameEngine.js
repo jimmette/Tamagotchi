@@ -132,12 +132,12 @@ let gameEngine = () => {
   }
 
   // console.log("rate:", satietyRate, energyRate, joyRate);
-  console.log(
-    "points:",
-    myStore.getState().satietyLevel,
-    myStore.getState().energyLevel,
-    myStore.getState().joyLevel
-  );
+  // console.log(
+  //   "points:",
+  //   myStore.getState().satietyLevel,
+  //   myStore.getState().energyLevel,
+  //   myStore.getState().joyLevel
+  // );
   // console.log("isTammyMad", myStore.getState().isTammyMad);
   // console.log("isTammyWeak", myStore.getState().isTammyWeak);
   myStore.dispatch({

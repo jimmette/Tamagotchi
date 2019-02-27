@@ -10,10 +10,13 @@ class DisplayInventory extends React.Component {
   render = () => {
     return (
       <View>
-        <H1 style={{ textAlign: "center" }}>Inventory</H1>
+        <H1 style={{ textAlign: "center", marginBottom: 50 }}>Inventory</H1>
         <Button
           full
-          style={{ backgroundColor: "#5067FF" }}
+          style={{
+            marginTop: CONSTANTS.app_height - 262,
+            backgroundColor: "#5067FF"
+          }}
           onPress={this.handleOnPressCloseInventory}
         >
           <Text>Close inventory</Text>

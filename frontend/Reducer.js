@@ -6,7 +6,7 @@ const initState = {
   _id: "",
   saveTime: undefined,
   allowOnlineSync: false,
-  allowPushNotifications: false,
+  allowNotifications: false,
   tammyName: "Tammy",
   tammyWasBornOn: new Date(),
   satietyLevel: 100,
@@ -23,7 +23,6 @@ const initState = {
   spriteAnimation: SpriteTable.animationTypes[0],
   currentPage: CONSTANTS.startpage,
   howMuchHasTammyWalked: 0,
-  howLongHasTammyWalked: 0,
   howLongHasTammySlept: 0,
   displayMessage: "",
   eatTimeout: undefined
@@ -139,7 +138,7 @@ reducer = (state = initState, action) => {
         ...state,
         isTammySleeping: false,
         spriteAnimation: whatIsTammyMoodAnimation(),
-        howLongHasTammySlept: state.howLongHasTammyWalked + action.time
+        howLongHasTammySlept: action.time
       };
     case "MAKE_TAMMY_PLAY":
       console.log(" in MAKE_TAMMY_PLAY", 125, tammyStates());
@@ -172,8 +171,7 @@ reducer = (state = initState, action) => {
         hasStepIncreased: false,
         spriteAnimation: whatIsTammyMoodAnimation(),
         walkInterval: undefined,
-        howMuchHasTammyWalked: state.howMuchHasTammyWalked + action.steps,
-        howLongHasTammyWalked: state.howLongHasTammyWalked + action.time
+        howMuchHasTammyWalked: state.howMuchHasTammyWalked + action.steps
       };
     case "MAKE_TAMMY_JUMP":
       console.log(" in MAKE_TAMMY_JUMP", 158, tammyStates());
@@ -235,8 +233,8 @@ reducer = (state = initState, action) => {
       return { ...state, _id: action.payload };
     case "SETTINGS_ONLINE_SYNC":
       return { ...state, allowOnlineSync: action.payload };
-    case "SETTINGS_PUSH_NOTIFICATIONS":
-      return { ...state, allowPushNotifications: action.payload };
+    case "SETTINGS_NOTIFICATIONS":
+      return { ...state, allowNotifications: action.payload };
     case "CURRENT_PAGE":
       console.log(" in CURRENT_PAGE");
       return { ...state, currentPage: action.payload };

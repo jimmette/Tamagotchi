@@ -8,7 +8,7 @@ import moment from "moment";
 class DisplayWalk extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { startTime: new Date(), currentTime: new Date() };
+    this.state = { startTime: new Date() };
     this.yawnTimeout = undefined;
     this.sleepInterval = undefined;
   }
@@ -20,7 +20,7 @@ class DisplayWalk extends React.Component {
     this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.sleepInterval = setInterval(() => {
       this.setState({ currentTime: new Date() });
     }, 1000);
@@ -29,9 +29,9 @@ class DisplayWalk extends React.Component {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_YAWN" });
       this.props.dispatch({ type: "MAKE_TAMMY_SLEEP" });
     }, CONSTANTS.yawn_timer);
-  };
+  }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     if (this.yawnTimeout) {
       clearTimeout(this.yawnTimeout);
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_YAWN" });
@@ -39,8 +39,12 @@ class DisplayWalk extends React.Component {
 
     if (this.sleepInterval) {
       clearInterval(this.sleepInterval);
+      this.props.dispatch({
+        type: "MAKE_TAMMY_STOP_SLEEP",
+        time: moment().diff(moment(this.state.startTime, "minutes"))
+      });
     }
-  };
+  }
 
   getTimer = () => {
     let prev = this.state.startTime;

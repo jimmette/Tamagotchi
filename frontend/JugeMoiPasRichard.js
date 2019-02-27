@@ -17,7 +17,7 @@ let _retrieveDataLocal = async () => {
       state.energyLevel =
         state.energyLevel + NORMAL_RATES.energyLossRate * diffTime;
       state.joyLevel = state.joyLevel + NORMAL_RATES.joyLossRate * diffTime;
-      console.log("Time since last save", diffTime);
+      // console.log("Time since last save", diffTime);
       myStore.dispatch({ type: "RESTORE_DATA", payload: state });
     }
   } catch (error) {

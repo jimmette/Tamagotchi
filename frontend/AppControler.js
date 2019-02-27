@@ -1,7 +1,7 @@
 import React from "react";
 import { Font } from "expo";
 import { Container, View, Content, Text } from "native-base";
-import { StyleSheet, ImageBackground } from "react-native";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import DisplayHeader from "./display/DisplayHeader";
 import DisplayFab from "./display/DisplayFab";
@@ -18,15 +18,7 @@ import { isTammyDoingSomething } from "./GameEngine";
 import CONSTANTS from "./Constants";
 import { _retrieveDataLocal, _storeDataLocal } from "./JugeMoiPasRichard";
 import { backupTammy, restoreTammy } from "./Networking";
-
-{
-  /* <ImageBackground
-source={{uri: "require('./assets/images/background.png')"}} 
-        <ImageBackground
-          source={require("./assets/images/background.png")}
-          style={{ flex: 1 }}
-        />*/
-}
+import LocalNotifications from "./LocalNotifications";
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +44,45 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 0,
     paddingRight: 0
+  },
+  bubble_1: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#FFF",
+    borderWidth: 4,
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+    transform: [{ rotate: "15deg" }, { scaleX: 2 }],
+    marginTop: -15,
+    marginLeft: 50,
+    zIndex: 2
+  },
+  bubble_2: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#FFF",
+    borderWidth: 3,
+    width: 15,
+    height: 15,
+    borderRadius: 15 / 2,
+    transform: [{ rotate: "5deg" }, { scaleX: 2 }],
+    marginTop: 5,
+    marginLeft: 55,
+    zIndex: 2
+  },
+  bubble_3: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#FFF",
+    borderWidth: 3,
+    width: 10,
+    height: 10,
+    borderRadius: 10 / 2,
+    transform: [{ rotate: "-5deg" }, { scaleX: 1.5 }],
+    marginTop: 5,
+    marginLeft: 70,
+    zIndex: 2
   }
 });
 
@@ -73,7 +104,7 @@ class AppControler extends React.Component {
     }, 1000);
     this.storeDataOnlineInterval = undefined;
   }
-  componentDidMount = async () => {
+  async componentDidMount() {
     await _retrieveDataLocal();
     this.displayWelcomeMessage();
 
@@ -82,9 +113,9 @@ class AppControler extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
-  };
+  }
 
-  componentDidUpdate = () => {
+  componentDidUpdate() {
     if (
       this.props.allowOnlineSync === true &&
       this.storeDataOnlineInterval === undefined
@@ -95,22 +126,22 @@ class AppControler extends React.Component {
         }
       }, 10000);
     }
-  };
+  }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     clearInterval(this.gameEngineInterval);
     clearInterval(this.storeDataLocalInterval);
     if (this.storeDataOnlineInterval) {
       clearInterval(this.storeDataOnlineInterval);
     }
-  };
+  }
 
   displayWelcomeMessage = () => {
     let text = "Hello! So good to see you!";
     if (this.props.isTammyMad === true) {
-      text = "I'm not feeling so good...";
-    } else if (this.props.isTammyWeak === true) {
       text = "I'm not talking to you right now.";
+    } else if (this.props.isTammyWeak === true) {
+      text = "I'm not feeling so good...";
     }
     this.props.dispatch({
       type: "DISPLAY_MESSAGE",
@@ -120,12 +151,11 @@ class AppControler extends React.Component {
       this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
     }, CONSTANTS.animation_interruption_messages);
   };
-  displayHomepage = () => {
+  displayBubbleSpeech = () => {
     return (
       <>
-        <Content>
-          <DisplayStatus />
-          {this.props.displayMessage !== "" ? (
+        {this.props.displayMessage !== "" ? (
+          <>
             <View style={styles.bubble_container}>
               {this.state.fontLoaded ? (
                 <Text style={styles.text_container}>
@@ -133,19 +163,35 @@ class AppControler extends React.Component {
                 </Text>
               ) : null}
             </View>
-          ) : null}
+            <View style={styles.bubble_1} />
+            <View style={styles.bubble_2} />
+            <View style={styles.bubble_3} />
+          </>
+        ) : null}
+      </>
+    );
+  };
+  displayHomepage = () => {
+    return (
+      <Container style={styles.container}>
+        <DisplayHeader />
+        <Content>
+          <DisplayStatus />
+          {this.displayBubbleSpeech()}
           <SpriteAnimation
             top={100}
             left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}
           />
         </Content>
         <DisplayFab />
-      </>
+        <DisplayFooter />
+      </Container>
     );
   };
   displayWalk = () => {
     return (
-      <>
+      <Container style={styles.container}>
+        <DisplayHeader />
         <Content>
           <DisplayStatus />
           <SpriteAnimation
@@ -154,12 +200,13 @@ class AppControler extends React.Component {
           />
         </Content>
         <DisplayWalk />
-      </>
+      </Container>
     );
   };
   displaySleep = () => {
     return (
-      <>
+      <Container style={styles.container}>
+        <DisplayHeader />
         <Content>
           <DisplayStatus />
           <SpriteAnimation
@@ -168,28 +215,40 @@ class AppControler extends React.Component {
           />
         </Content>
         <DisplaySleep />
-      </>
+      </Container>
     );
   };
   displaySettings = () => {
     return (
-      <Content>
-        <DisplaySettings />
-      </Content>
+      <Container style={styles.container}>
+        <DisplayHeader />
+        <Content>
+          <DisplaySettings />
+        </Content>
+        <DisplayFooter />
+      </Container>
     );
   };
   displayStats = () => {
     return (
-      <Content>
-        <DisplayStats />
-      </Content>
+      <Container style={styles.container}>
+        <DisplayHeader />
+        <Content>
+          <DisplayStats />
+        </Content>
+        <DisplayFooter />
+      </Container>
     );
   };
   displayInventory = () => {
     return (
-      <Content>
-        <DisplayInventory />
-      </Content>
+      <Container style={styles.container}>
+        <DisplayHeader />
+        <Content>
+          <DisplayInventory />
+        </Content>
+        <DisplayFooter />
+      </Container>
     );
   };
   renderContent = () => {
@@ -217,11 +276,10 @@ class AppControler extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <DisplayHeader />
+      <>
+        <LocalNotifications />
         {this.renderContent()}
-        <DisplayFooter />
-      </Container>
+      </>
     );
   }
 }

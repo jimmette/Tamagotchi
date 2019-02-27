@@ -12,7 +12,29 @@ const gradient = [
   "#49E20E"
 ];
 
-// const gradient = ['57bb8a', '63b682', '73b87e', '84bb7b', '94bd77', 'a4c073', 'b0be6e', 'c4c56d', 'd4c86a', 'e2c965', 'f5ce62', 'f3c563', 'e9b861', 'e6ad61', 'ecac67', 'e9a268', 'e79a69', 'e5926b', 'e2886c', 'e0816d', 'dd776e']
+// const gradient = [
+//   "#57bb8a",
+//   "#63b682",
+//   "#73b87e",
+//   "#84bb7b",
+//   "#94bd77",
+//   "#a4c073",
+//   "#b0be6e",
+//   "#c4c56d",
+//   "#d4c86a",
+//   "#e2c965",
+//   "#f5ce62",
+//   "#f3c563",
+//   "#e9b861",
+//   "#e6ad61",
+//   "#ecac67",
+//   "#e9a268",
+//   "#e79a69",
+//   "#e5926b",
+//   "#e2886c",
+//   "#e0816d",
+//   "#dd776e"
+// ];
 
 class DisplayStatus extends React.Component {
   constructor() {
@@ -64,7 +86,8 @@ class DisplayStatus extends React.Component {
         // display: "block",
         height: 20,
         overflow: "hidden",
-        width: "100%"
+        width: "100%",
+        backgroundColor: "#FFF"
       },
       satietyFill: {
         // display: "block",
