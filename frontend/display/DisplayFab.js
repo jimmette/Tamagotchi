@@ -22,7 +22,11 @@ class DisplayFab extends React.Component {
   };
   handleOnPressSleep = () => {
     this.setState({ activeSleep: false });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Sleep" });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: "Sleep",
+      title: this.props.tammyName
+    });
   };
   handleOnPressPlayPets = () => {
     this.setState({ activePlay: false });
@@ -32,7 +36,11 @@ class DisplayFab extends React.Component {
     }, CONSTANTS.play_timer);
   };
   handleOnPressPlayWalk = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Walk" });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: "Walk",
+      title: this.props.tammyName
+    });
   };
 
   isTammyEatDisabled = () => {
@@ -170,7 +178,8 @@ const mapStateToProps = state => {
     joyLevel: state.joyLevel,
     isTammyEating: state.isTammyEating,
     isTammySleeping: state.isTammySleeping,
-    isTammyPlaying: state.isTammyPlaying
+    isTammyPlaying: state.isTammyPlaying,
+    tammyName: state.tammyName
   };
 };
 

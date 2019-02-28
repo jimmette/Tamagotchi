@@ -7,13 +7,25 @@ class DisplayFooter extends React.Component {
     super(props);
   }
   handleOnPressSettings = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Settings" });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: "Settings",
+      title: "Setting"
+    });
   };
   handleOnPressStats = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Stats" });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: "Stats",
+      title: "Statistics"
+    });
   };
   handleOnPressInventory = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: "Inventory" });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: "Inventory",
+      title: "Inventory"
+    });
   };
   render() {
     return (

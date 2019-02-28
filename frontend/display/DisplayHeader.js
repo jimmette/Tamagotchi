@@ -8,7 +8,7 @@ class DisplayHeader extends React.Component {
       <Header>
         <Left />
         <Body>
-          <Title>{this.props.name}</Title>
+          <Title>{this.props.currentTitle}</Title>
           <Subtitle>your Tamagotchi</Subtitle>
         </Body>
         <Right />
@@ -18,7 +18,7 @@ class DisplayHeader extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { name: state.tammyName };
+  return { currentTitle: state.currentTitle };
 };
 
 export default connect(mapStateToProps)(DisplayHeader);

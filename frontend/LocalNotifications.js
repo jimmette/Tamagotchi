@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { TextInput, View, Keyboard } from "react-native";
 import { Constants, Notifications, Permissions } from "expo";
-import { connect } from "react-redux";
 import moment from "moment";
 
-class LocalNotifications extends Component {
-  setNotificationDetails = () => {
+export default class LocalNotifications extends Component {
+  onSubmit = () => {
     let dice = Math.floor(Math.random() * 4);
     let body = "";
     let title = this.props.tammyName + " says:";
@@ -31,12 +30,18 @@ class LocalNotifications extends Component {
       title: title,
       body: body
     };
-    let end = new Date(new Date().setHours(17, 0, 0, 0)).getMilliseconds();
-    let start = new Date().getMilliseconds();
-    let diff = end - start;
-    console.log("wToday", diff);
+
+    let wantedTime = moment()
+      .startOf("day")
+      .add(17, "hours");
+    let diff = moment(wantedTime).diff(moment(), "milliseconds");
+    let diffPlus = moment(wantedTime)
+      .add(24, "hours")
+      .diff(moment(), "milliseconds");
+    let timer = diff > 0 ? diff : diffPlus;
+
     const schedulingOptions = {
-      time: diff
+      time: new Date().getTime() + timer
     };
 
     // Notifications show only when app is not active.
@@ -48,16 +53,16 @@ class LocalNotifications extends Component {
   };
 
   handleNotification() {
-    console.warn("I love you");
+    console.warn("ok! got your notif");
   }
 
   async componentDidMount() {
     // We need to ask for Notification permissions for ios devices
     let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    console.log("result.status", result.status, Constants.isDevice);
+
     if (Constants.isDevice && result.status === "granted") {
       console.log("Notification permissions granted.");
-      this.setNotificationDetails();
+      this.onSubmit();
     }
 
     // If we want to do something with the notification when the app
@@ -66,20 +71,12 @@ class LocalNotifications extends Component {
     Notifications.addListener(this.handleNotification);
   }
 
-  componentWillUnmount() {}
-
   render() {
-    return <View />;
+    return (
+      <View />
+      // <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+      //   <TextInput onSubmitEditing={this.onSubmit} placeholder={"time in ms"} />
+      // </View>
+    );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    tammyName: state.tammyName,
-    satietyLevel: state.satietyLevel,
-    energyLevel: state.energyLevel,
-    joyLevel: state.joyLevel
-  };
-};
-
-export default connect(mapStateToProps)(LocalNotifications);

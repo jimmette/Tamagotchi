@@ -29,6 +29,7 @@ let _storeDataLocal = async () => {
   let state = JSON.parse(JSON.stringify(myStore.getState()));
   state.saveTime = new Date();
   state.currentPage = CONSTANTS.homepage;
+  state.currentTitle = myStore.getState().tammyName;
   state.displayMessage = "";
   let data = JSON.stringify(state);
   try {

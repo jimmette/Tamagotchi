@@ -1,6 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, H1, Form, Input, Item, Label } from "native-base";
+import {
+  View,
+  Text,
+  Button,
+  H1,
+  Form,
+  Input,
+  Item,
+  Label,
+  List,
+  ListItem,
+  Left,
+  Right
+} from "native-base";
 import { Switch, StyleSheet } from "react-native";
 import CONSTANTS from "../Constants";
 import { _removeDataLocal } from "../JugeMoiPasRichard";
@@ -11,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 15,
     marginLeft: 10,
     marginRight: 10
   },
@@ -23,10 +36,18 @@ class DisplaySettings extends React.Component {
     _removeDataLocal();
     // deleteTammy();
     this.props.dispatch({ type: "HARD_RESET" });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.startpage });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: CONSTANTS.startpage,
+      title: this.props.tammyName
+    });
   };
   handleOnPressCloseSettings = () => {
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: CONSTANTS.homepage,
+      title: this.props.tammyName
+    });
   };
   handleOnValueChangeOnlineSync = value => {
     this.props.dispatch({ type: "SETTINGS_ONLINE_SYNC", payload: value });
@@ -40,39 +61,37 @@ class DisplaySettings extends React.Component {
   render = () => {
     return (
       <View>
-        <H1 style={{ textAlign: "center", marginBottom: 50 }}>Settings</H1>
-        <Form>
-          <Item last>
-            <Input
-              placeholder={this.props.tammyName}
-              onChangeText={text => {
-                this.props.dispatch({
-                  type: "SETTINGS_NAME_CHANGE",
-                  payload: text
-                });
-              }}
-            />
-          </Item>
-        </Form>
-        <View style={styles.toggle_container}>
-          <Text>Online Sync </Text>
-          <Switch
-            onValueChange={this.handleOnValueChangeOnlineSync}
-            value={this.props.allowOnlineSync}
-          />
-        </View>
-        {/* <View style={styles.toggle_container}>
-          <Text>Notifications </Text>
-          <Switch
-            onValueChange={this.handleOnValueChangeNotifications}
-            value={this.props.allowNotifications}
-            disabled={!this.props.allowOnlineSync}
-          />
-        </View> */}
+        <List>
+          <ListItem>
+            <Left>
+              <Input
+                placeholder={this.props.tammyName}
+                onChangeText={text => {
+                  this.props.dispatch({
+                    type: "SETTINGS_NAME_CHANGE",
+                    payload: text
+                  });
+                }}
+              />
+            </Left>
+            <Right />
+          </ListItem>
+          <ListItem>
+            <Left>
+              <Text>Online Sync </Text>
+            </Left>
+            <Right>
+              <Switch
+                onValueChange={this.handleOnValueChangeOnlineSync}
+                value={this.props.allowOnlineSync}
+              />
+            </Right>
+          </ListItem>
+        </List>
         <Button
           full
           style={{
-            marginTop: CONSTANTS.app_height - 405,
+            marginTop: CONSTANTS.app_height - 500,
             backgroundColor: "#FF0000"
           }}
           onPress={this.handleOnPressResetTheApp}
@@ -81,7 +100,7 @@ class DisplaySettings extends React.Component {
         </Button>
         <Button
           full
-          style={{ marginTop: 10, backgroundColor: "#5067FF" }}
+          style={{ marginTop: 1, backgroundColor: "#5067FF" }}
           onPress={this.handleOnPressCloseSettings}
         >
           <Text>Close settings</Text>

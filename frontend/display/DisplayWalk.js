@@ -51,7 +51,8 @@ class DisplayWalk extends React.Component {
       });
       this.props.dispatch({
         type: "CURRENT_PAGE",
-        payload: CONSTANTS.homepage
+        page: CONSTANTS.homepage,
+        title: this.props.tammyName
       });
     }
   }
@@ -63,7 +64,11 @@ class DisplayWalk extends React.Component {
       steps: this.state.currentStepCount,
       time: moment().diff(moment(this.state.startTime), "minutes")
     });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: CONSTANTS.homepage,
+      title: this.props.tammyName
+    });
   };
 
   doLootMagicStuff = () => {
@@ -173,7 +178,8 @@ class DisplayWalk extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    howMuchHasTammyWalked: state.howMuchHasTammyWalked
+    howMuchHasTammyWalked: state.howMuchHasTammyWalked,
+    tammyName: state.tammyName
   };
 };
 

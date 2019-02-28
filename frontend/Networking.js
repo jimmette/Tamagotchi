@@ -6,6 +6,7 @@ let backupTammy = () => {
   let data = JSON.parse(JSON.stringify(myStore.getState()));
   data.saveTime = new Date();
   data.currentPage = CONSTANTS.homepage;
+  data.currentTitle = myStore.getState().tammyName;
   data.displayMessage = "";
   body = JSON.stringify(data);
   fetch("http://10.65.105.164:4000/backup", {

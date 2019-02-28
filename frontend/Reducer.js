@@ -22,6 +22,7 @@ const initState = {
   isTammyWeak: false,
   spriteAnimation: SpriteTable.animationTypes[0],
   currentPage: CONSTANTS.startpage,
+  currentTitle: "Tammy",
   howMuchHasTammyWalked: 0,
   howLongHasTammySlept: 0,
   displayMessage: "",
@@ -237,7 +238,11 @@ reducer = (state = initState, action) => {
       return { ...state, allowNotifications: action.payload };
     case "CURRENT_PAGE":
       console.log(" in CURRENT_PAGE");
-      return { ...state, currentPage: action.payload };
+      return {
+        ...state,
+        currentPage: action.page,
+        currentTitle: action.title
+      };
     case "SETTINGS_NAME_CHANGE":
       return { ...state, tammyName: action.payload };
     case "RESTORE_DATA":

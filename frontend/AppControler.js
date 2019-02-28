@@ -17,7 +17,7 @@ import gameEngine from "./GameEngine";
 import { isTammyDoingSomething } from "./GameEngine";
 import CONSTANTS from "./Constants";
 import { _retrieveDataLocal, _storeDataLocal } from "./JugeMoiPasRichard";
-import { backupTammy, restoreTammy } from "./Networking";
+// import { backupTammy, restoreTammy } from "./Networking";
 import LocalNotifications from "./LocalNotifications";
 
 const styles = StyleSheet.create({
@@ -122,7 +122,7 @@ class AppControler extends React.Component {
     ) {
       this.storeDataOnlineInterval = setInterval(() => {
         if (isTammyDoingSomething() === false) {
-          backupTammy();
+          // backupTammy();
         }
       }, 10000);
     }

@@ -82,7 +82,11 @@ doesTammyNeedsToStopSleeping = () => {
     myStore.getState().energyLevel === CONSTANTS.energy_level_max_points
   ) {
     myStore.dispatch({ type: "MAKE_TAMMY_STOP_SLEEP" });
-    myStore.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
+    myStore.dispatch({
+      type: "CURRENT_PAGE",
+      page: CONSTANTS.homepage,
+      title: myStore.getState().tammyName
+    });
     //Display I'm well rested. Thank you!
     myStore.dispatch({
       type: "DISPLAY_MESSAGE",

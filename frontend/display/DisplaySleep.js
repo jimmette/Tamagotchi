@@ -17,7 +17,11 @@ class DisplayWalk extends React.Component {
       type: "MAKE_TAMMY_STOP_SLEEP",
       time: moment().diff(moment(this.state.startTime, "minutes"))
     });
-    this.props.dispatch({ type: "CURRENT_PAGE", payload: CONSTANTS.homepage });
+    this.props.dispatch({
+      type: "CURRENT_PAGE",
+      page: CONSTANTS.homepage,
+      title: this.props.tammyName
+    });
   };
 
   componentDidMount() {
@@ -82,7 +86,7 @@ class DisplayWalk extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return { tammyName: state.tammyName };
 };
 
 export default connect(mapStateToProps)(DisplayWalk);
