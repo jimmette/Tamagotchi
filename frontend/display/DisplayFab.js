@@ -11,7 +11,12 @@ class DisplayFab extends React.Component {
   }
 
   handleOnPressEatCarrot = () => {
-    this.handleOnPressEatApple();
+    this.setState({ activeEat: false });
+    let result = setTimeout(() => {
+      this.props.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
+    }, CONSTANTS.eat_timer);
+    this.props.dispatch({ type: "MAKE_TAMMY_EAT", payload: result });
+    // this.props.dispatch({ type: "SET_ITEMS", carrots: -1 });
   };
   handleOnPressEatApple = () => {
     this.setState({ activeEat: false });
@@ -19,6 +24,7 @@ class DisplayFab extends React.Component {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
     }, CONSTANTS.eat_timer);
     this.props.dispatch({ type: "MAKE_TAMMY_EAT", payload: result });
+    // this.props.dispatch({ type: "SET_ITEMS", apples: -1 });
   };
   handleOnPressSleep = () => {
     this.setState({ activeSleep: false });
@@ -179,7 +185,9 @@ const mapStateToProps = state => {
     isTammyEating: state.isTammyEating,
     isTammySleeping: state.isTammySleeping,
     isTammyPlaying: state.isTammyPlaying,
-    tammyName: state.tammyName
+    tammyName: state.tammyName,
+    nbCarrots: state.nbCarrots,
+    nbApples: state.nbApples
   };
 };
 

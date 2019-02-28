@@ -194,6 +194,9 @@ class AppControler extends React.Component {
         <DisplayHeader />
         <Content>
           <DisplayStatus />
+          <Text style={{ textAlign: "center" }}>
+            {this.props.displayMessage}
+          </Text>
           <SpriteAnimation
             top={100}
             left={(CONSTANTS.app_width - CONSTANTS.sprite_width) / 2}

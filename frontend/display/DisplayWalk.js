@@ -12,6 +12,7 @@ class DisplayWalk extends React.Component {
       startTime: new Date(),
       isPedometerAvailable: "checking",
       currentStepCount: 0,
+      lastCoinStep: 0,
       hasStepIncreased: false,
       isTammyLooting: false
     };
@@ -64,6 +65,7 @@ class DisplayWalk extends React.Component {
       steps: this.state.currentStepCount,
       time: moment().diff(moment(this.state.startTime), "minutes")
     });
+    this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
     this.props.dispatch({
       type: "CURRENT_PAGE",
       page: CONSTANTS.homepage,
@@ -81,8 +83,11 @@ class DisplayWalk extends React.Component {
     if (this.state.isTammyLooting === true) {
       return undefined;
     }
+    if (this.state.hasStepIncreased === false) {
+      return false;
+    }
 
-    let dice = Math.floor(Math.random() * 10);
+    let dice = Math.floor(Math.random() * 15);
     switch (dice) {
       case 0:
         this.props.dispatch({ type: "BOOST_TAMMY_SATIETY" });
@@ -100,9 +105,55 @@ class DisplayWalk extends React.Component {
           this.setState({ isTammyLooting: false });
         }, CONSTANTS.boost_timer);
         break;
+      case 2:
+        if (this.props.nbApples < CONSTANTS.nb_max_apples) {
+          this.props.dispatch({ type: "SET_ITEMS", apples: 1 });
+          this.props.dispatch({
+            type: "DISPLAY_MESSAGE",
+            payload: "You got an apple"
+          });
+          this.setState({ isTammyLooting: true });
+          setTimeout(() => {
+            this.setState({ isTammyLooting: false });
+          }, 1000);
+        }
+        break;
+      case 3:
+        if (this.props.nbCarrots < CONSTANTS.nb_max_carrots) {
+          this.props.dispatch({ type: "SET_ITEMS", carrots: 1 });
+          this.props.dispatch({
+            type: "DISPLAY_MESSAGE",
+            payload: "You got a carrot"
+          });
+          this.setState({ isTammyLooting: true });
+          setTimeout(() => {
+            this.setState({ isTammyLooting: false });
+          }, 1000);
+        }
+        break;
 
       default:
         break;
+    }
+  };
+
+  doCoinMagicStuff = () => {
+    if (this.state.isTammyLooting === true) {
+      return undefined;
+    }
+    if (this.state.hasStepIncreased === false) {
+      return false;
+    }
+    if (
+      this.state.currentStepCount - this.state.lastCoinStep >
+      CONSTANTS.nb_step_for_coin
+    ) {
+      this.setState({ lastCoinStep: this.state.currentStepCount });
+      this.props.dispatch({ type: "SET_ITEMS", coins: 1 });
+      this.props.dispatch({
+        type: "DISPLAY_MESSAGE",
+        payload: "You got a coin"
+      });
     }
   };
 
@@ -113,8 +164,9 @@ class DisplayWalk extends React.Component {
         currentStepCount: result.steps,
         hasStepIncreased: test
       });
-      //Des a loot needs to drop
+      //Does a loot need to drop
       this.doLootMagicStuff();
+      this.doCoinMagicStuff();
     });
 
     Pedometer.isAvailableAsync().then(
@@ -179,7 +231,10 @@ class DisplayWalk extends React.Component {
 const mapStateToProps = state => {
   return {
     howMuchHasTammyWalked: state.howMuchHasTammyWalked,
-    tammyName: state.tammyName
+    tammyName: state.tammyName,
+    nbCarrots: state.nbCarrots,
+    nbApples: state.nbApples,
+    nbCoins: state.nbCoins
   };
 };
 

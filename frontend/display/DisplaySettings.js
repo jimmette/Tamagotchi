@@ -100,7 +100,7 @@ class DisplaySettings extends React.Component {
         </Button>
         <Button
           full
-          style={{ marginTop: 1, backgroundColor: "#5067FF" }}
+          style={{ marginTop: 5, backgroundColor: "#5067FF" }}
           onPress={this.handleOnPressCloseSettings}
         >
           <Text>Close settings</Text>

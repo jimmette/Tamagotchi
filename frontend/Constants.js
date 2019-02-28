@@ -20,7 +20,11 @@ const CONSTANTS = {
   animation_interruption_messages: 4000,
   game_engine_timer: 500,
   loot_start_timer: 0,
-  boost_timer: 4000
+  boost_timer: 4000,
+
+  nb_max_carrots: 100,
+  nb_max_apples: 100,
+  nb_step_for_coin: 20
 };
 
 const NORMAL_RATES = {

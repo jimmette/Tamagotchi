@@ -1,6 +1,5 @@
 import CONSTANTS from "./Constants";
 import SpriteTable from "./SpriteTable";
-import moment from "moment";
 
 const initState = {
   _id: "",
@@ -26,7 +25,10 @@ const initState = {
   howMuchHasTammyWalked: 0,
   howLongHasTammySlept: 0,
   displayMessage: "",
-  eatTimeout: undefined
+  eatTimeout: undefined,
+  nbCarrots: 0,
+  nbApples: 0,
+  nbCoins: 0
 };
 
 checkLimits = num => {
@@ -74,22 +76,32 @@ reducer = (state = initState, action) => {
   let newJoyLevel = 0;
 
   switch (action.type) {
+    case "SET_ITEMS":
+      let apples = action.apples ? action.apples : 0;
+      let carrots = action.carrots ? action.carrots : 0;
+      let coins = action.coins ? action.coins : 0;
+      return {
+        ...state,
+        nbApples: state.nbApples + apples,
+        nbCarrots: state.nbCarrots + carrots,
+        nbCoins: state.nbCoins + coins
+      };
     case "MAKE_TAMMY_MAD":
-      console.log(" in MAKE_TAMMY_MAD", 55, tammyStates());
+      // console.log(" in MAKE_TAMMY_MAD", 55, tammyStates());
       return {
         ...state,
         spriteAnimation: SpriteTable.animationTypes[9],
         isTammyMad: true
       };
     case "MAKE_TAMMY_WEAK":
-      console.log(" in MAKE_TAMMY_WEAK", 62, tammyStates());
+      // console.log(" in MAKE_TAMMY_WEAK", tammyStates());
       return {
         ...state,
         spriteAnimation: SpriteTable.animationTypes[11],
         isTammyWeak: true
       };
     case "MAKE_TAMMY_NOT_MAD_OR_WEAK":
-      console.log(" in MAKE_TAMMY_NOT_MAD_OR_WEAK", 69, tammyStates());
+      // console.log(" in MAKE_TAMMY_NOT_MAD_OR_WEAK", tammyStates());
       return {
         ...state,
         isTammyMad: false,
@@ -97,14 +109,14 @@ reducer = (state = initState, action) => {
         spriteAnimation: SpriteTable.animationTypes[0]
       };
     case "MAKE_TAMMY_EAT":
-      console.log(" in MAKE_TAMMY_EAT", 77, tammyStates());
+      // console.log(" in MAKE_TAMMY_EAT", tammyStates());
       return {
         ...state,
         isTammyEating: true,
         spriteAnimation: SpriteTable.animationTypes[13]
       };
     case "MAKE_TAMMY_STOP_EAT":
-      console.log(" in MAKE_TAMMY_STOP_EAT", 85, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_EAT", tammyStates());
       clearTimeout(state.eatTimeout);
       return {
         ...state,
@@ -112,28 +124,28 @@ reducer = (state = initState, action) => {
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "MAKE_TAMMY_YAWN":
-      console.log(" in MAKE_TAMMY_YAWN", 94, tammyStates());
+      // console.log(" in MAKE_TAMMY_YAWN", tammyStates());
       return {
         ...state,
         isTammyInUselessAnimation: true,
         spriteAnimation: SpriteTable.animationTypes[6]
       };
     case "MAKE_TAMMY_STOP_YAWN":
-      console.log(" in MAKE_TAMMY_STOP_YAWN", 101, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_YAWN", tammyStates());
       return {
         ...state,
         isTammyInUselessAnimation: false,
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "MAKE_TAMMY_SLEEP":
-      console.log(" in MAKE_TAMMY_SLEEP", 108, tammyStates());
+      // console.log(" in MAKE_TAMMY_SLEEP", tammyStates());
       return {
         ...state,
         isTammySleeping: true,
         spriteAnimation: SpriteTable.animationTypes[8]
       };
     case "MAKE_TAMMY_STOP_SLEEP":
-      console.log(" in MAKE_TAMMY_STOP_SLEEP", 116, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_SLEEP", tammyStates());
       clearInterval(state.sleepInterval);
       return {
         ...state,
@@ -142,21 +154,21 @@ reducer = (state = initState, action) => {
         howLongHasTammySlept: action.time
       };
     case "MAKE_TAMMY_PLAY":
-      console.log(" in MAKE_TAMMY_PLAY", 125, tammyStates());
+      // console.log(" in MAKE_TAMMY_PLAY", tammyStates());
       return {
         ...state,
         isTammyPlaying: true,
         spriteAnimation: SpriteTable.animationTypes[12]
       };
     case "MAKE_TAMMY_STOP_PLAY":
-      console.log(" in MAKE_TAMMY_STOP_PLAY", 132, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_PLAY", tammyStates());
       return {
         ...state,
         isTammyPlaying: false,
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "MAKE_TAMMY_WALK":
-      console.log(" in MAKE_TAMMY_WALK", 139, tammyStates());
+      // console.log(" in MAKE_TAMMY_WALK", tammyStates());
       return {
         ...state,
         isTammyWalking: true,
@@ -164,7 +176,7 @@ reducer = (state = initState, action) => {
         walkInterval: action.payload
       };
     case "MAKE_TAMMY_STOP_WALK":
-      console.log(" in MAKE_TAMMY_STOP_WALK", 147, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_WALK", tammyStates());
       clearInterval(state.walkInterval);
       return {
         ...state,
@@ -175,21 +187,21 @@ reducer = (state = initState, action) => {
         howMuchHasTammyWalked: state.howMuchHasTammyWalked + action.steps
       };
     case "MAKE_TAMMY_JUMP":
-      console.log(" in MAKE_TAMMY_JUMP", 158, tammyStates());
+      // console.log(" in MAKE_TAMMY_JUMP", tammyStates());
       return {
         ...state,
         isTammyInUselessAnimation: true,
         spriteAnimation: SpriteTable.animationTypes[7]
       };
     case "MAKE_TAMMY_STOP_JUMP":
-      console.log(" in MAKE_TAMMY_STOP_JUMP", 165, tammyStates());
+      // console.log(" in MAKE_TAMMY_STOP_JUMP", tammyStates());
       return {
         ...state,
         isTammyInUselessAnimation: false,
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "BOOST_TAMMY_SATIETY":
-      console.log(" in BOOST_TAMMY_SATIETY", 172, tammyStates());
+      // console.log(" in BOOST_TAMMY_SATIETY", tammyStates());
       return {
         ...state,
         isTammyEating: true,
@@ -197,7 +209,7 @@ reducer = (state = initState, action) => {
         spriteAnimation: SpriteTable.animationTypes[14]
       };
     case "STOP_BOOST_TAMMY_SATIETY":
-      console.log(" in STOP_BOOST_TAMMY_SATIETY", 180, tammyStates());
+      // console.log(" in STOP_BOOST_TAMMY_SATIETY", tammyStates());
       return {
         ...state,
         isTammyEating: false,
@@ -205,7 +217,7 @@ reducer = (state = initState, action) => {
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "BOOST_TAMMY_ENERGY":
-      console.log(" in BOOST_TAMMY_ENERGY", 172, tammyStates());
+      // console.log(" in BOOST_TAMMY_ENERGY", tammyStates());
       return {
         ...state,
         isTammySleeping: true,
@@ -213,7 +225,7 @@ reducer = (state = initState, action) => {
         spriteAnimation: SpriteTable.animationTypes[14]
       };
     case "STOP_BOOST_TAMMY_ENERGY":
-      console.log(" in STOP_BOOST_TAMMY_ENERGY", 180, tammyStates());
+      // console.log(" in STOP_BOOST_TAMMY_ENERGY", tammyStates());
       return {
         ...state,
         isTammySleeping: false,
@@ -221,32 +233,35 @@ reducer = (state = initState, action) => {
         spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "DISPLAY_MESSAGE":
-      console.log(" in DISPLAY_MESSAGE");
+      // console.log(" in DISPLAY_MESSAGE");
       return {
         ...state,
         displayMessage: action.payload
       };
     case "INCREASE_STEPS":
-      console.log(" in INCREASE_STEPS");
+      // console.log(" in INCREASE_STEPS");
       return { ...state, hasStepIncreased: action.payload };
     case "SETUP_ID":
-      console.log("in SETUP_ID");
+      // console.log("in SETUP_ID");
       return { ...state, _id: action.payload };
     case "SETTINGS_ONLINE_SYNC":
+      // console.log("in SETTINGS_ONLINE_SYNC")
       return { ...state, allowOnlineSync: action.payload };
     case "SETTINGS_NOTIFICATIONS":
+      // console.log("in SETTINGS_NOTIFICATIONS")
       return { ...state, allowNotifications: action.payload };
     case "CURRENT_PAGE":
-      console.log(" in CURRENT_PAGE");
+      // console.log(" in CURRENT_PAGE");
       return {
         ...state,
         currentPage: action.page,
         currentTitle: action.title
       };
     case "SETTINGS_NAME_CHANGE":
+      // console.log("in SETTINGS_NAME_CHANGE")
       return { ...state, tammyName: action.payload };
     case "RESTORE_DATA":
-      console.log(" in RESTORE_DATA");
+      // console.log(" in RESTORE_DATA");
       let data = action.payload;
       data.satietyLevel = checkLimits(data.satietyLevel);
       data.energyLevel = checkLimits(data.energyLevel);
@@ -264,7 +279,7 @@ reducer = (state = initState, action) => {
         joyLevel: newJoyLevel
       };
     case "HARD_RESET":
-      console.log(" in HARD_RESET");
+      // console.log(" in HARD_RESET");
       return initState;
     default:
       return state;

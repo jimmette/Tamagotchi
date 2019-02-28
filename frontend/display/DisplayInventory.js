@@ -35,10 +35,30 @@ class DisplayInventory extends React.Component {
             }}
           >
             <Left>
+              <Icon active type="MaterialCommunityIcons" name="coin" />
+              <Text>Coins (every {CONSTANTS.nb_step_for_coin} steps)</Text>
+            </Left>
+            <Right>
+              <Text>{this.props.nbCoins}</Text>
+            </Right>
+          </ListItem>
+          <ListItem
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center"
+            }}
+          >
+            <Left>
               <Icon active type="MaterialCommunityIcons" name="carrot" />
               <Text>Carrot</Text>
             </Left>
-            <Right />
+            <Right>
+              <Text>
+                {this.props.nbCarrots}/{CONSTANTS.nb_max_carrots}
+              </Text>
+            </Right>
           </ListItem>
           <ListItem
             style={{
@@ -52,7 +72,11 @@ class DisplayInventory extends React.Component {
               <Icon active type="MaterialCommunityIcons" name="food-apple" />
               <Text>Apples</Text>
             </Left>
-            <Right />
+            <Right>
+              <Text>
+                {this.props.nbApples}/{CONSTANTS.nb_max_apples}
+              </Text>
+            </Right>
           </ListItem>
         </List>
         <Button
@@ -71,7 +95,12 @@ class DisplayInventory extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { tammyName: state.tammyName };
+  return {
+    tammyName: state.tammyName,
+    nbCarrots: state.nbCarrots,
+    nbApples: state.nbApples,
+    nbCoins: state.nbCoins
+  };
 };
 
 export default connect(mapStateToProps)(DisplayInventory);
