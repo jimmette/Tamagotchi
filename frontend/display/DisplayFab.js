@@ -10,21 +10,21 @@ class DisplayFab extends React.Component {
     this.state = { activeEat: false, activeSleep: false, activePlay: false };
   }
 
-  handleOnPressEatCarrot = () => {
+  handleOnPressEatCarrots = () => {
     this.setState({ activeEat: false });
     let result = setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
     }, CONSTANTS.eat_timer);
     this.props.dispatch({ type: "MAKE_TAMMY_EAT", payload: result });
-    // this.props.dispatch({ type: "SET_ITEMS", carrots: -1 });
+    this.props.dispatch({ type: "SET_ITEMS", carrots: -1 });
   };
-  handleOnPressEatApple = () => {
+  handleOnPressEatApples = () => {
     this.setState({ activeEat: false });
     let result = setTimeout(() => {
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_EAT" });
     }, CONSTANTS.eat_timer);
     this.props.dispatch({ type: "MAKE_TAMMY_EAT", payload: result });
-    // this.props.dispatch({ type: "SET_ITEMS", apples: -1 });
+    this.props.dispatch({ type: "SET_ITEMS", apples: -1 });
   };
   handleOnPressSleep = () => {
     this.setState({ activeSleep: false });
@@ -49,8 +49,20 @@ class DisplayFab extends React.Component {
     });
   };
 
-  isTammyEatDisabled = () => {
+  isTammyEatApplesDisabled = () => {
     if (isTammyDoingSomething()) {
+      return true;
+    }
+    if (this.props.nbApples < 1) {
+      return true;
+    }
+    return false;
+  };
+  isTammyEatCarrotsDisabled = () => {
+    if (isTammyDoingSomething()) {
+      return true;
+    }
+    if (this.props.nbCarrots < 1) {
       return true;
     }
     return false;
@@ -73,11 +85,17 @@ class DisplayFab extends React.Component {
   };
 
   render() {
-    let isTammyEatDisabled = this.isTammyEatDisabled();
+    let isTammyEatApplesDisabled = this.isTammyEatApplesDisabled();
+    let isTammyEatCarrotsDisabled = this.isTammyEatCarrotsDisabled();
     let isTammySleepDisabled = this.isTammySleepDisabled();
     let isTammyPlayDisabled = this.isTammyPlayDisabled();
 
-    let eatBackgroundColor = this.backgroundColorPicker(isTammyEatDisabled);
+    let eatApplesBackgroundColor = this.backgroundColorPicker(
+      isTammyEatApplesDisabled
+    );
+    let eatCarrotsBackgroundColor = this.backgroundColorPicker(
+      isTammyEatCarrotsDisabled
+    );
     let sleepBackgroundColor = this.backgroundColorPicker(isTammySleepDisabled);
     let playBackgroundColor = this.backgroundColorPicker(isTammyPlayDisabled);
 
@@ -96,9 +114,9 @@ class DisplayFab extends React.Component {
           <Icon type="MaterialCommunityIcons" name="silverware-fork-knife" />
           {this.state.activeEat === true ? (
             <Button
-              style={{ backgroundColor: eatBackgroundColor }}
-              disabled={isTammyEatDisabled}
-              onPress={this.handleOnPressEatApple}
+              style={{ backgroundColor: eatApplesBackgroundColor }}
+              disabled={isTammyEatApplesDisabled}
+              onPress={this.handleOnPressEatApples}
             >
               <Icon type="MaterialCommunityIcons" name="food-apple" />
             </Button>
@@ -107,9 +125,9 @@ class DisplayFab extends React.Component {
           )}
           {this.state.activeEat === true ? (
             <Button
-              style={{ backgroundColor: eatBackgroundColor }}
-              disabled={isTammyEatDisabled}
-              onPress={this.handleOnPressEatCarrot}
+              style={{ backgroundColor: eatCarrotsBackgroundColor }}
+              disabled={isTammyEatCarrotsDisabled}
+              onPress={this.handleOnPressEatCarrots}
             >
               <Icon type="MaterialCommunityIcons" name="carrot" />
             </Button>
@@ -130,7 +148,7 @@ class DisplayFab extends React.Component {
           <Icon type="MaterialCommunityIcons" name="sleep" />
           {this.state.activeSleep === true ? (
             <Button
-              style={{ backgroundColor: eatBackgroundColor }}
+              style={{ backgroundColor: sleepBackgroundColor }}
               disabled={isTammySleepDisabled}
               onPress={this.handleOnPressSleep}
             >

@@ -17,6 +17,15 @@ let _retrieveDataLocal = async () => {
       state.energyLevel =
         state.energyLevel + NORMAL_RATES.energyLossRate * diffTime;
       state.joyLevel = state.joyLevel + NORMAL_RATES.joyLossRate * diffTime;
+      // state.satietyLevel = 60;
+      // state.energyLevel = 60;
+      // state.joyLevel = 60;
+      // state.tammyWasBornOn = new Date().setDate(new Date().getDate() - 3);
+      // state.howMuchHasTammyWalked = 754;
+      // state.nbCarrots = 5;
+      // state.nbApples = 5;
+      // state.nbCoins = 10;
+
       // console.log("Time since last save", diffTime);
       myStore.dispatch({ type: "RESTORE_DATA", payload: state });
     }

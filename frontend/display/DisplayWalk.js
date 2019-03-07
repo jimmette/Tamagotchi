@@ -18,6 +18,7 @@ class DisplayWalk extends React.Component {
     };
     this.jumpTimeout = undefined;
     this.walkInterval = undefined;
+    this.lootTimeout = undefined;
   }
 
   componentDidMount() {
@@ -41,6 +42,11 @@ class DisplayWalk extends React.Component {
     if (this.jumpTimeout) {
       clearTimeout(this.jumpTimeout);
       this.props.dispatch({ type: "MAKE_TAMMY_STOP_JUMP" });
+    }
+    if (this.lootTimeout) {
+      clearTimeout(this.lootTimeout);
+      this.props.dispatch({ type: "STOP_BOOST_TAMMY_ENERGY" });
+      this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
     }
 
     if (this.walkInterval) {
@@ -87,21 +93,31 @@ class DisplayWalk extends React.Component {
       return false;
     }
 
-    let dice = Math.floor(Math.random() * 15);
+    let dice = Math.floor(Math.random() * 8);
     switch (dice) {
       case 0:
         this.props.dispatch({ type: "BOOST_TAMMY_SATIETY" });
+        this.props.dispatch({
+          type: "DISPLAY_MESSAGE",
+          payload: "Satiety Boost"
+        });
         this.setState({ isTammyLooting: true });
-        setTimeout(() => {
+        this.lootTimeout = setTimeout(() => {
           this.props.dispatch({ type: "STOP_BOOST_TAMMY_SATIETY" });
+          this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
           this.setState({ isTammyLooting: false });
         }, CONSTANTS.boost_timer);
         break;
       case 1:
         this.props.dispatch({ type: "BOOST_TAMMY_ENERGY" });
+        this.props.dispatch({
+          type: "DISPLAY_MESSAGE",
+          payload: "Energy Boost"
+        });
         this.setState({ isTammyLooting: true });
-        setTimeout(() => {
+        this.lootTimeout = setTimeout(() => {
           this.props.dispatch({ type: "STOP_BOOST_TAMMY_ENERGY" });
+          this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
           this.setState({ isTammyLooting: false });
         }, CONSTANTS.boost_timer);
         break;
@@ -114,6 +130,7 @@ class DisplayWalk extends React.Component {
           });
           this.setState({ isTammyLooting: true });
           setTimeout(() => {
+            this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
             this.setState({ isTammyLooting: false });
           }, 1000);
         }
@@ -127,6 +144,7 @@ class DisplayWalk extends React.Component {
           });
           this.setState({ isTammyLooting: true });
           setTimeout(() => {
+            this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
             this.setState({ isTammyLooting: false });
           }, 1000);
         }
@@ -148,12 +166,17 @@ class DisplayWalk extends React.Component {
       this.state.currentStepCount - this.state.lastCoinStep >
       CONSTANTS.nb_step_for_coin
     ) {
-      this.setState({ lastCoinStep: this.state.currentStepCount });
+      this.setState({
+        lastCoinStep: this.state.lastCoinStep + CONSTANTS.nb_step_for_coin
+      });
       this.props.dispatch({ type: "SET_ITEMS", coins: 1 });
       this.props.dispatch({
         type: "DISPLAY_MESSAGE",
         payload: "You got a coin"
       });
+      setTimeout(() => {
+        this.props.dispatch({ type: "DISPLAY_MESSAGE", payload: "" });
+      }, 1000);
     }
   };
 

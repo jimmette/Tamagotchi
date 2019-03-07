@@ -37,11 +37,6 @@ class DisplayStats extends React.Component {
             </Text>
           </ListItem>
         </List>
-
-        {/* <Text>
-          {this.props.tammyName} has slept for{" "}
-          {moment(this.props.howLongHasTammySlept).format("h:mm:ss")} minutes
-        </Text> */}
         <Button
           full
           style={{
@@ -61,8 +56,7 @@ const mapStateToProps = state => {
   return {
     tammyName: state.tammyName,
     tammyWasBornOn: state.tammyWasBornOn,
-    howMuchHasTammyWalked: state.howMuchHasTammyWalked,
-    howLongHasTammySlept: state.howLongHasTammySlept
+    howMuchHasTammyWalked: state.howMuchHasTammyWalked
   };
 };
 

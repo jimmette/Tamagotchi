@@ -194,7 +194,7 @@ class AppControler extends React.Component {
         <DisplayHeader />
         <Content>
           <DisplayStatus />
-          <Text style={{ textAlign: "center" }}>
+          <Text style={{ textAlign: "center", marginTop: 10 }}>
             {this.props.displayMessage}
           </Text>
           <SpriteAnimation

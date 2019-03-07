@@ -23,7 +23,6 @@ const initState = {
   currentPage: CONSTANTS.startpage,
   currentTitle: "Tammy",
   howMuchHasTammyWalked: 0,
-  howLongHasTammySlept: 0,
   displayMessage: "",
   eatTimeout: undefined,
   nbCarrots: 0,
@@ -150,8 +149,7 @@ reducer = (state = initState, action) => {
       return {
         ...state,
         isTammySleeping: false,
-        spriteAnimation: whatIsTammyMoodAnimation(),
-        howLongHasTammySlept: action.time
+        spriteAnimation: whatIsTammyMoodAnimation()
       };
     case "MAKE_TAMMY_PLAY":
       // console.log(" in MAKE_TAMMY_PLAY", tammyStates());
