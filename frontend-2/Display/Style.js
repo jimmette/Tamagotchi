@@ -3,43 +3,37 @@ import CONSTANTS from "../Constants";
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    width: CONSTANTS.app_width - 40,
-    height:
-      CONSTANTS.app_height -
-      80 -
-      CONSTANTS.footer_hight -
-      CONSTANTS.header_hight,
-    marginTop: 40,
-    marginBottom: 40,
-    marginLeft: 20,
-    marginRight: 20,
-    padding: 10,
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#999",
-    opacity: 0.95,
-    overflow: "hidden",
-    zIndex: 2,
-    borderRadius: 25
+    alignItems: "flex-start",
+    marginTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: "rgba(200,200,200,0.9)",
+    borderRadius: 15
   },
-  title: { color: "#fff", fontWeight: "bold", marginTop: 10, marginBottom: 20 },
+  title: {
+    width: "100%",
+    textAlign: "center",
+    color: "#444",
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 50
+  },
+  subtitle: { width: "100%", textAlign: "center", color: "#fff" },
   xbutton: {
     position: "absolute",
-    left: CONSTANTS.app_width - 45,
-    top: 30,
+    left: CONSTANTS.app_width - 60,
+    top: 0,
     maxWidth: 30,
     maxHeight: 30,
     margin: 0,
     padding: 0,
-    zIndex: 4,
-    backgroundColor: "transparent"
+    zIndex: 4
   },
-  list: { width: "100%" },
+  list: { width: "100%", margin: 0, padding: 0 },
+  listItem: { margin: 0, padding: 0 },
   text: { color: "#fff" }
 });
 

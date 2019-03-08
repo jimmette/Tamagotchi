@@ -10,19 +10,31 @@ import {
   Title,
   Subtitle
 } from "native-base";
-import { StyleSheet } from "react-native";
+import {
+  StyleSheet,
+  Modal,
+  Text,
+  TouchableHighlight,
+  View,
+  Alert
+} from "react-native";
 import CONSTANTS from "../Constants";
 import DisplayFooter from "./DisplayFooter";
 import { Image } from "react-native";
 import DisplaySettings from "./DisplaySettings";
 import DisplayStatistics from "./DisplayStatistics";
+import DisplayInventory from "./DisplayInventory";
+import DisplayStore from "./DisplayStore";
+import DisplayLevelBars from "./DisplayLevelBars";
 
 class DisplayHome extends React.Component {
-  static navigationOptions = { header: null };
-
   constructor(props) {
     super(props);
+    this.state = { modalVisible: false };
   }
+  setModalVisible = state => {
+    this.setState({ modalVisible: state });
+  };
 
   render() {
     return (
@@ -37,12 +49,19 @@ class DisplayHome extends React.Component {
         </Header>
         <Content>
           <Body style={styles.container}>
-            {this.props.displayFooterOption === "SETTINGS" ? (
-              <DisplaySettings />
-            ) : null}
-            {this.props.displayFooterOption === "STATISTICS" ? (
-              <DisplayStatistics />
-            ) : null}
+            <DisplaySettings
+              isVisible={this.props.displayFooterOption === "SETTINGS"}
+            />
+            <DisplayStatistics
+              isVisible={this.props.displayFooterOption === "STATISTICS"}
+            />
+            <DisplayInventory
+              isVisible={this.props.displayFooterOption === "INVENTORY"}
+            />
+            <DisplayStore
+              isVisible={this.props.displayFooterOption === "STORE"}
+            />
+            <DisplayLevelBars />
             <Image source={require("../assets/images/idle.gif")} />
           </Body>
         </Content>
@@ -59,7 +78,7 @@ const styles = StyleSheet.create({
       CONSTANTS.app_height - CONSTANTS.footer_hight - CONSTANTS.header_hight,
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#fff",
     overflow: "hidden",

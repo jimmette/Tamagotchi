@@ -6,16 +6,20 @@ import { Container, Content, Body } from "native-base";
 import { Image } from "react-native";
 
 class DisplayIntro extends React.Component {
-  static navigationOptions = { header: null };
-
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.props.navigation.navigate("Home");
-    }, 5000);
+    }, CONSTANTS.intro_timer);
+  }
+  componentWillUnmount() {
+    if (this.timeout !== undefined) {
+      clearTimeout(this.timeout);
+    }
   }
 
   render() {
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#CCC",
+    backgroundColor: "#666",
     overflow: "hidden"
   }
 });

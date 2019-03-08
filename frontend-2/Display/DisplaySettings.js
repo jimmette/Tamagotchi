@@ -4,13 +4,15 @@ import {
   Container,
   Button,
   H1,
+  H2,
   List,
   ListItem,
   Left,
   Right
 } from "native-base";
-import { Image, Switch } from "react-native";
+import { Image, View, Switch } from "react-native";
 import { connect } from "react-redux";
+import Modal from "react-native-modal";
 import styles from "./Style";
 
 class DisplaySettings extends React.Component {
@@ -22,29 +24,17 @@ class DisplaySettings extends React.Component {
   };
   render() {
     return (
-      <>
-        <Container style={styles.xbutton}>
+      <Modal isVisible={this.props.isVisible} hasBackdrop={false}>
+        <View style={styles.xbutton}>
           <Button transparent dark onPress={this.onPressExit}>
             <Image source={require("../assets/images/xbutton.png")} />
           </Button>
-        </Container>
-        <Container style={styles.container}>
+        </View>
+        <View style={styles.container}>
           <H1 style={styles.title}>SETTINGS</H1>
-          <List style={styles.list}>
-            <ListItem>
-              <Text style={styles.text}>{this.props.tammyName}</Text>
-            </ListItem>
-            <ListItem>
-              <Left>
-                <Text style={styles.text}>Online Sync</Text>
-              </Left>
-              <Right>
-                <Switch />
-              </Right>
-            </ListItem>
-          </List>
-        </Container>
-      </>
+          <H2 style={styles.subtitle}>COMING SOON</H2>
+        </View>
+      </Modal>
     );
   }
 }
