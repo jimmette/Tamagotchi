@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import CONSTANTS from "../Constants";
 import { Container, Content, Body } from "native-base";
 import { Image } from "react-native";
+import { LinearGradient } from "expo";
 
 class DisplayIntro extends React.Component {
   constructor(props) {
@@ -27,14 +28,24 @@ class DisplayIntro extends React.Component {
       <Container>
         <Content>
           <Body style={styles.container}>
-            <Image
-              style={{ width: 300 }}
-              source={require("../assets/images/title.png")}
-            />
-            <Image
-              style={{ width: 300 }}
-              source={require("../assets/images/dance.gif")}
-            />
+            <LinearGradient
+              colors={["#f4d442", "#ffffff", "#ffffff"]}
+              style={{
+                width: CONSTANTS.app_width,
+                height: CONSTANTS.app_height,
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Image
+                style={{ width: 300 }}
+                source={require("../assets/images/title.png")}
+              />
+              <Image
+                style={{ height: 287 }}
+                source={require("../assets/images/sprites/dance.gif")}
+              />
+            </LinearGradient>
           </Body>
         </Content>
       </Container>
@@ -50,7 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#666",
+    backgroundColor: "#fff",
     overflow: "hidden"
   }
 });

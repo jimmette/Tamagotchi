@@ -1,4 +1,4 @@
-import CONSTANTS from "./Constants";
+import CONSTANTS from "../Constants";
 
 const iniState = {
   tammyName: "Tammy",
@@ -8,7 +8,8 @@ const iniState = {
   nbApples: 0,
   satietyLevel: CONSTANTS.satiety_level_max_points,
   energyLevel: CONSTANTS.energy_level_max_points,
-  joyLevel: CONSTANTS.joy_level_max_points
+  joyLevel: CONSTANTS.joy_level_max_points,
+  displayAnimation: "IDLE"
 };
 
 reducer = (state = iniState, action) => {
@@ -26,6 +27,10 @@ reducer = (state = iniState, action) => {
         energyLevel: state.energyLevel + action.payload.energyRate,
         joyLevel: state.joyLevel + action.payload.joyRate
       };
+    case "SET_ANIMATION":
+      return { ...state, displayAnimation: action.payload.animation };
+    case "SET_NAME":
+      return { ...state, tammyName: action.payload.name };
     default:
       return state;
   }

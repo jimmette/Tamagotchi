@@ -8,7 +8,11 @@ import {
   List,
   ListItem,
   Left,
-  Right
+  Right,
+  Form,
+  Item,
+  Label,
+  Input
 } from "native-base";
 import { Image, View, Switch } from "react-native";
 import { connect } from "react-redux";
@@ -22,6 +26,9 @@ class DisplaySettings extends React.Component {
       payload: { option: "NONE" }
     });
   };
+  onChangeName = text => {
+    this.props.dispatch({ type: "SET_NAME", payload: { name: text } });
+  };
   render() {
     return (
       <Modal isVisible={this.props.isVisible} hasBackdrop={false}>
@@ -30,10 +37,17 @@ class DisplaySettings extends React.Component {
             <Image source={require("../assets/images/xbutton.png")} />
           </Button>
         </View>
-        <View style={styles.container}>
+        <Container style={styles.container}>
           <H1 style={styles.title}>SETTINGS</H1>
-          <H2 style={styles.subtitle}>COMING SOON</H2>
-        </View>
+          <Form style={{ width: "100%" }}>
+            <Item>
+              <Input
+                placeholder={this.props.tammyName}
+                onChangeText={this.onChangeName}
+              />
+            </Item>
+          </Form>
+        </Container>
       </Modal>
     );
   }

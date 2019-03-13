@@ -10,7 +10,9 @@ const CONSTANTS = {
   energy_level_max_points: 100,
   joy_level_max_points: 100,
 
-  intro_timer: 5000
+  intro_timer: 5000,
+  eat_timer: 4000,
+  yawn_timer: 2000
 };
 
 const NORMAL_RATES = {

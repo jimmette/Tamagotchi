@@ -1,6 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import myStore from "./Store";
+import myStore from "./Redux/Store";
 import AppController from "./AppController";
 import AppNavigator from "./AppNavigator";
 

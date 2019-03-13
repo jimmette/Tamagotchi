@@ -10,22 +10,17 @@ import {
   Title,
   Subtitle
 } from "native-base";
-import {
-  StyleSheet,
-  Modal,
-  Text,
-  TouchableHighlight,
-  View,
-  Alert
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import CONSTANTS from "../Constants";
 import DisplayFooter from "./DisplayFooter";
-import { Image } from "react-native";
 import DisplaySettings from "./DisplaySettings";
 import DisplayStatistics from "./DisplayStatistics";
 import DisplayInventory from "./DisplayInventory";
 import DisplayStore from "./DisplayStore";
 import DisplayLevelBars from "./DisplayLevelBars";
+import DisplayFAB from "./DisplayFAB";
+import DisplaySprite from "./DisplaySprite";
+import DisplayModal from "./DisplayModal";
 
 class DisplayHome extends React.Component {
   constructor(props) {
@@ -49,20 +44,12 @@ class DisplayHome extends React.Component {
         </Header>
         <Content>
           <Body style={styles.container}>
-            <DisplaySettings
-              isVisible={this.props.displayFooterOption === "SETTINGS"}
-            />
-            <DisplayStatistics
-              isVisible={this.props.displayFooterOption === "STATISTICS"}
-            />
-            <DisplayInventory
-              isVisible={this.props.displayFooterOption === "INVENTORY"}
-            />
-            <DisplayStore
-              isVisible={this.props.displayFooterOption === "STORE"}
-            />
-            <DisplayLevelBars />
-            <Image source={require("../assets/images/idle.gif")} />
+            <DisplayModal />
+            <View style={styles.container_small}>
+              <DisplayLevelBars />
+              <DisplayFAB />
+            </View>
+            <DisplaySprite />
           </Body>
         </Content>
         <DisplayFooter />
@@ -83,12 +70,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     overflow: "hidden",
     zIndex: 0
+  },
+  container_small: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start"
   }
 });
 
 const mapStateToProps = state => {
   return {
-    displayFooterOption: state.displayFooterOption,
     tammyName: state.tammyName
   };
 };
